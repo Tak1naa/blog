@@ -1,0 +1,105 @@
+name: solitude-blog
+
+services:
+  postgres:
+    image: postgres:16.10-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-waline}
+      POSTGRES_USER: ${POSTGRES_USER:-waline}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - waline-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+    security_opt:
+      - no-new-privileges:true
+
+  waline:
+    image: lizheming/waline:1.41.6
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Shanghai
+      SITE_NAME: ${SITE_NAME:-Takina Ying}
+      SITE_URL: ${SITE_URL:?set SITE_URL in .env}
+      SECURE_DOMAINS: ${SECURE_DOMAINS:?set SECURE_DOMAINS in .env}
+      JWT_TOKEN: ${WALINE_JWT_TOKEN:?set WALINE_JWT_TOKEN in .env}
+      COMMENT_AUDIT: "true"
+      LOGIN: disable
+      PG_HOST: postgres
+      PG_PORT: "5432"
+      PG_DB: ${POSTGRES_DB:-waline}
+      PG_USER: ${POSTGRES_USER:-waline}
+      PG_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8360/"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+    security_opt:
+      - no-new-privileges:true
+
+  music-bridge:
+    image: ${MUSIC_BRIDGE_IMAGE:-solitude-music-bridge:local}
+    build:
+      context: .
+      dockerfile: services/music-bridge/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+      NETEASE_PLAYLIST_ID: ${NETEASE_PLAYLIST_ID:-}
+      NETEASE_COOKIE: ${NETEASE_COOKIE:-}
+      UPSTREAM_TIMEOUT_MS: ${UPSTREAM_TIMEOUT_MS:-8000}
+      METADATA_TTL_SECONDS: ${METADATA_TTL_SECONDS:-21600}
+      STALE_TTL_SECONDS: ${STALE_TTL_SECONDS:-604800}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:3000/healthz"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    networks: [backend, egress]
+    security_opt:
+      - no-new-privileges:true
+
+  web:
+    image: ${WEB_IMAGE:-solitude-blog-web:local}
+    build:
+      context: .
+      dockerfile: deploy/web.Dockerfile
+    restart: unless-stopped
+    depends_on:
+      waline:
+        condition: service_started
+      music-bridge:
+        condition: service_started
+    ports:
+      - "127.0.0.1:${BLOG_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/healthz"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    networks: [backend]
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  backend:
+    internal: true
+  egress: {}
+
+volumes:
+  waline-db:

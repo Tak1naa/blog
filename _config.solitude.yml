@@ -1,0 +1,197 @@
+site:
+  name:
+    class: text
+    custom: Takina Ying
+  icon: /media/takina/avatar.png
+
+nav:
+  menu:
+    首页: /
+    文章:
+      归档: /archives/ || fas fa-folder-closed
+      分类: /categories/ || fas fa-clone
+      标签: /tags/ || fas fa-tags
+    朋友:
+      友链: /links/ || fas fa-user-group
+    我的:
+      音乐馆: /music/ || fas fa-music
+      关于: /about/ || fas fa-user
+  right:
+    random: true
+
+hometop:
+  enable: true
+  banner:
+    title: 让灵感像萤火一样<br>落在文字里
+    desc:
+      - 记录技术、生活与漫游
+      - 保持好奇，也保持松弛
+  group:
+    开始阅读: /archives/ || fas fa-book-open || linear-gradient(120deg,#5b8def,#8f6fe8)
+  recommendList:
+    - order: 1
+      sup: 置顶
+      title: Tak1na 自建测速
+      url: /posts/tak1na-speedtest/
+      img: /media/takina/aquarium.jpg
+      color: none
+
+aside:
+  home:
+    noSticky: about
+    Sticky: newestPost,allInfo
+  post:
+    noSticky: about
+    Sticky: newestPost
+  page:
+    noSticky: about
+    Sticky: newestPost,allInfo
+  position: 0
+  my_card:
+    author:
+      img: /media/takina/avatar.png
+    description: 在代码与生活之间，收藏一点微光。
+    content: 以井之上泷奈为灵感的个人空间。
+    state:
+      morning: ✨ 早上好，新的一天开始了
+      noon: 🍲 午餐时间
+      afternoon: 🌞 下午好
+      night: 🌙 夜深了，欢迎回来
+      goodnight: 晚安 😴
+    witty_words:
+      - 今天也要保持好奇
+      - 愿每一次记录都有回声
+  toc:
+    post: true
+    page: false
+    vague: true
+  tags:
+    enable: true
+    limit: 20
+  siteinfo:
+    postcount: true
+    wordcount: false
+    pv: false
+    uv: false
+    updatetime: true
+    runtimeenable: true
+    runtime: "2026-09-21 00:00:00"
+
+page:
+  error: true
+  tags: true
+  categories: true
+  archives: 0
+  default:
+    cover:
+      - /media/takina/aquarium.jpg
+      - /media/takina/night-action.jpg
+
+post:
+  default:
+    cover:
+      - /media/takina/aquarium.jpg
+      - /media/takina/night-action.jpg
+    locate: China
+    copyright:
+      enable: true
+      author: /media/takina/avatar.png
+      license: CC BY-NC-SA 4.0
+      licenurl: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans
+
+cover:
+  index_enable: true
+  aside_enable: true
+  archives_enable: true
+  position: both
+
+lazyload:
+  enable: false
+  field: site
+  placeholder: /media/brand/placeholder.svg
+  errorimg: /media/brand/placeholder.svg
+
+comment:
+  use: waline
+  commentBarrage: false
+  lazyload: true
+  count: true
+  sidebar: false
+  pv: false
+  avatar: https://gravatar.com/avatar
+  newest_comment:
+    enable: false
+    storage: .5
+    limit: 5
+
+waline:
+  envId: /api/comment
+  pageview: false
+  option:
+    login: disable
+    reaction: false
+    requiredMeta:
+      - nick
+      - mail
+
+search:
+  enable: true
+  type: local
+  tags:
+    - Hexo
+    - Solitude
+  local:
+    preload: false
+    CDN: /search.xml
+
+music:
+  enable: false
+
+pjax:
+  enable: true
+
+# Reimu-like placement only: keep Solitude's own cards and visual language.
+index_post_list:
+  direction: row
+  cover: both
+
+darkmode:
+  enable: true
+  button: true
+  autoChangeMode: 1
+
+# Modern browsers are the deployment target. Disabling nib's legacy prefixes
+# also avoids its opacity() parser treating CSS custom properties as numbers.
+css_prefix: false
+
+footer:
+  information:
+    author: /media/takina/avatar.png
+    left: {}
+  group:
+    导航:
+      归档: /archives/
+      标签: /tags/
+      关于: /about/
+    相关:
+      Solitude: https://github.com/everfu/hexo-theme-solitude
+      Firefly: https://github.com/CuteLeaf/Firefly
+      素材来源: /credits/
+  randomlink: false
+  runtime: true
+
+extends:
+  head:
+    - <link rel="stylesheet" href="/custom/enhancements.css">
+  body:
+    - <script type="module" src="/custom/enhancements.js"></script>
+
+# Fixed, self-hosted theme dependencies: no CDN font/script is needed to render
+# navigation, image sources, search or PJAX. Keep the existing upstream versions.
+CDN:
+  options:
+    fontawesome: /vendor/fontawesome-7.3.0/css/all.min.css
+    pjax: /vendor/theme/pjax-0.2.8.min.js
+    typeit_js: /vendor/theme/typeit-8.8.7.min.js
+    snackbar: /vendor/theme/snackbar-0.1.16.min.js
+    pace_js: /vendor/theme/pace-1.2.4.min.js

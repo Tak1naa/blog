@@ -1,0 +1,17 @@
+Theme dependencies self-hosted without modification, 2026-11-09.
+Source: https://cdn.jsdelivr.net/npm/<package>@<version>/<path>
+
+@fortawesome/fontawesome-free 7.3.0
+  css/all.min.css
+  webfonts/fa-solid-900.woff2, fa-regular-400.woff2, fa-brands-400.woff2,
+  fa-v4compatibility.woff2
+  svgs/solid/dice-d6.svg, magnifying-glass.svg, bars.svg, arrow-up.svg
+  License: fontawesome-7.3.0/LICENSE.txt; original notices retained.
+pjax 0.2.8: pjax.min.js
+typeit 8.8.7: dist/index.umd.min.js
+node-snackbar 0.1.16: dist/snackbar.min.js
+pace-js 1.2.4: pace.min.js
+
+Critical SVG artwork is inlined at build time by scripts/render-hardening.js.
+These are copies of existing pinned theme dependencies, not extra runtime
+frameworks. Review upstream notices when changing versions.

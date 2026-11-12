@@ -1,0 +1,7 @@
+packages:
+  - .
+  - services/music-bridge
+
+allowBuilds:
+  esbuild: true
+  hexo-util: true

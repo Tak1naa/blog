@@ -1,0 +1,10 @@
+[Unit]
+Description=Back up Solitude blog Waline database
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/solitude-blog
+EnvironmentFile=/opt/solitude-blog/.env
+ExecStart=/opt/solitude-blog/deploy/backup-postgres.sh /opt/solitude-blog/backups

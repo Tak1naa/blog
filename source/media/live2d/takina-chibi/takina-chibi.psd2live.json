@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "model": "takina-chibi",
+  "generator": "PSD2Live 1.4.2",
+  "runtimeTarget": "Cubism50",
+  "mocVersion": 5,
+  "cmo3TargetVersionNo": 5000000,
+  "cmo3FileFormatVersion": "500000005",
+  "canvas": {"width":1024,"height":1536},
+  "config": {"atlasSize":2048,"meshSpacing":64,"headTurnStrength":0.045,"bodyStrength":0.025,"meshOnly":false,"generateDeformers":true,"exportMotions":true},
+  "faceRig": {"algorithm":"perspective-parallelogram-nine-pose-v2","angleX":[-45,0,45],"angleY":[-30,0,30],"initialAngleZ":0.0,"centerX":506.58002,"centerY":498.69598,"radiusX":240.85999,"radiusY":244.29599},
+  "deformerHierarchy": {"head":"DeformHeadContainer","face":"DeformFaceNinePose","frontHair":["DeformHairFrontFollow","DeformHairFrontPhysics"],"backHair":["DeformHairBackFollow","DeformHairBackPhysics"]},
+  "physics": {"enabled":true,"frontHair":true,"backHair":true,"eyeJelly":false,"groups":["PhysicsHairBack","PhysicsHairFront"]},
+  "summary": {"layers":11,"drawables":11,"deformers":14,"parameters":18,"atlasPages":1},
+  "layers": [
+    {"source":"back hair","type":"preset","tag":"back hair","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshBackHair"},
+  {"source":"topwear body","type":"preset","tag":"topwear","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshTopwear"},
+  {"source":"neck","type":"preset","tag":"neck","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshNeck"},
+  {"source":"face","type":"preset","tag":"face","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshFace"},
+  {"source":"eyewhite-r","type":"preset","tag":"eyewhite","side":"RIGHT","parameter":"","switchId":0,"drawable":"ArtMeshEyewhiteR"},
+  {"source":"eyewhite-l","type":"preset","tag":"eyewhite","side":"LEFT","parameter":"","switchId":0,"drawable":"ArtMeshEyewhiteL"},
+  {"source":"mouth close","type":"preset","tag":"mouth_close","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshMouthClose"},
+  {"source":"mouth open / Upper lip outline","type":"preset","tag":"mouth_open","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshMouthOpen_lip_0"},
+  {"source":"mouth open / Lower lip outline","type":"preset","tag":"mouth_open","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshMouthOpen_lip_1"},
+  {"source":"mouth open","type":"preset","tag":"mouth_open","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshMouthOpen"},
+  {"source":"front hair","type":"preset","tag":"front hair","side":"NONE","parameter":"","switchId":0,"drawable":"ArtMeshFrontHair"}
+  ],
+  "warnings": ["Duplicate layer names detected: eyewhite; stable layer IDs were used to distinguish them."]
+}

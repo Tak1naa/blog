@@ -1,0 +1,65 @@
+{
+  "name": "solitude-firefly-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Solitude-based personal blog with Firefly-inspired media experiences",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "hexo": {
+    "version": "7.3.0"
+  },
+  "scripts": {
+    "dev": "pnpm build:enhancements && hexo server",
+    "build": "pnpm clean && pnpm build:enhancements && hexo generate",
+    "build:enhancements": "vite build",
+    "build:bridge": "tsc -p services/music-bridge/tsconfig.json",
+    "clean": "hexo clean",
+    "lint": "eslint src scripts services/music-bridge/src tests vite.config.ts && stylelint \"src/**/*.css\"",
+    "typecheck": "tsc --noEmit && pnpm build:bridge",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "new": "hexo new"
+  },
+  "dependencies": {
+    "@hono/node-server": "1.19.5",
+    "@meting/core": "1.6.1",
+    "embla-carousel": "8.6.0",
+    "embla-carousel-autoplay": "8.6.0",
+    "embla-carousel-fade": "8.6.0",
+    "hexo": "7.3.0",
+    "hexo-cli": "4.3.2",
+    "hexo-generator-archive": "2.0.0",
+    "hexo-generator-category": "2.0.0",
+    "hexo-generator-index": "4.0.0",
+    "hexo-generator-searchdb": "1.4.1",
+    "hexo-generator-tag": "2.0.0",
+    "hexo-renderer-marked": "7.0.1",
+    "hexo-renderer-pug": "3.0.0",
+    "hexo-renderer-stylus": "3.0.1",
+    "hexo-server": "3.0.0",
+    "hexo-theme-solitude": "4.0.0",
+    "hls.js": "1.7.3",
+    "hono": "4.9.8",
+    "howler": "2.2.4",
+    "l2d-widget": "0.1.2",
+    "yaml": "2.8.1",
+    "zod": "4.1.11"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "@types/howler": "2.2.12",
+    "@types/node": "24.5.2",
+    "@typescript-eslint/eslint-plugin": "8.44.1",
+    "@typescript-eslint/parser": "8.44.1",
+    "eslint": "9.36.0",
+    "stylelint": "16.24.0",
+    "stylelint-config-standard": "39.0.0",
+    "typescript": "5.9.2",
+    "typescript-eslint": "8.44.1",
+    "vite": "7.1.7",
+    "vitest": "3.2.4"
+  }
+}

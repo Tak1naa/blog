@@ -1,0 +1,36 @@
+node_modules/
+public/
+db.json
+source/custom/
+services/music-bridge/dist/
+test-results/
+playwright-report/
+.env
+.pnpm-store/
+.pnpm-data/
+.playwright-browsers/
+*.log
+
+# Generated releases, screenshots, traces and local backups are not source.
+/artifacts/
+/backups/
+/.env.*
+!/.env.example
+*.dump
+*.sql.gz
+
+# Private, host-specific deployment history; keep these local for rollback.
+/deploy/SERVER_DEPLOYMENT.md
+/deploy/publish-static-r*.sh
+/deploy/rollback-static-r*.sh
+/deploy/fix-edge-signal.sh
+/deploy/rollback-edge-signal.sh
+/deploy/add-edge-route.py
+/deploy/rollback-edge.sh
+/deploy/bootstrap-server.py
+/tools/audit-render.mjs
+/tools/probe-ingress-workers.py
+
+# Superseded model exports; retain the current editable PSD and artwork.
+/artwork/live2d/takina-chibi/archive/
+/artwork/live2d/takina-chibi/smoke.psd

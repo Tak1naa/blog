@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: docker compose config --quiet
+        env:
+          POSTGRES_PASSWORD: ci-password-only
+          WALINE_JWT_TOKEN: ci-token-only
+          SITE_URL: https://example.com
+          SECURE_DOMAINS: example.com
+      - run: docker build -f deploy/web.Dockerfile -t solitude-blog-web:${{ github.sha }} .
+      - run: docker build -f services/music-bridge/Dockerfile -t solitude-music-bridge:${{ github.sha }} .
+
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e --project=desktop --project=mobile
