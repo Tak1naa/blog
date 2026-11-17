@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "tests/e2e",
   testMatch: "pages.spec.ts",
-  timeout: 60000,
+  timeout: process.env.PAGES_BASE_URL ? 90000 : 60000,
   workers: 1,
   retries: 0,
   outputDir: "test-results/github-pages",

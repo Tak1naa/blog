@@ -34,7 +34,7 @@ test("Pages preserves local music, companion video and PJAX without backend requ
   await expect(page.locator(".ff-music-player")).toHaveClass(/is-playing/);
   await canvas.evaluate(node => node.dataset.pagesProbe = "original");
   await page.evaluate(() => (window as unknown as { Solitude: { navigate(url: string): void } }).Solitude.navigate("/blog/posts/speedtest-architecture/"));
-  await expect(page).toHaveURL(/\/blog\/posts\/speedtest-architecture\/$/);
+  await expect(page).toHaveURL(/\/blog\/posts\/speedtest-architecture\/$/, { timeout: 25000 });
   await expect(page.locator(".ff-pages-comments a")).toHaveAttribute("href", "https://tak1na.top/blog/posts/speedtest-architecture/#post-comment");
   await expect(page.locator(".ff-pages-comments a")).toHaveText("前往服务器版参与评论");
   await expect(page.locator("#waline-wrap")).toHaveCount(0);
