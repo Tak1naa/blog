@@ -1,12 +1,10 @@
 ---
-title: 友情链接
+title: Links
 date: 2026-09-21 09:00:00
 type: page
 comments: true
 ---
 
-## 朋友们
+## Community & Friends
 
-当前还没有添加友链。建议在交换友链时提供：站点名称、简介、地址和头像。
-
-> 示例内容上线前可以直接删除。
+Feel free to connect. For link exchange, please provide: Site Name, Description, URL, and Avatar.

@@ -1,0 +1,38 @@
+{
+  "browser": "158.0.8127.18",
+  "passed": true,
+  "results": [
+    {
+      "targetTime": 0,
+      "actualTime": 0,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 132611,
+      "transparentPixels": 294506
+    },
+    {
+      "targetTime": 3.5,
+      "actualTime": 3.5,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 138308,
+      "transparentPixels": 279598
+    },
+    {
+      "targetTime": 7.9,
+      "actualTime": 7.9,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 131192,
+      "transparentPixels": 290317
+    }
+  ],
+  "errors": [],
+  "scope": "Chromium playback, seeking and decoded alpha; Safari and blog integration not tested"
+}

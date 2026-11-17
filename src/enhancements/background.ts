@@ -18,6 +18,9 @@ export class MediaBackgroundManager {
   private readonly isMobile: boolean;
   private readonly reducedMotion: boolean;
   private readonly onVisibility = () => this.handleVisibility();
+  private readonly onScroll = () => this.scheduleRecede();
+  private recedeFrame?: number;
+  private recede = -1;
 
   constructor(
     private readonly config: ExperienceConfig,
@@ -39,7 +42,10 @@ export class MediaBackgroundManager {
     document.body.prepend(this.root);
     this.createSlides();
     document.addEventListener("visibilitychange", this.onVisibility);
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    window.addEventListener("resize", this.onScroll, { passive: true });
     this.applyMode(this.allowedMode(this.mode));
+    this.updateRecede();
   }
 
   updateSettings(settings: UserSettings): void {
@@ -60,6 +66,9 @@ export class MediaBackgroundManager {
 
   destroy(): void {
     document.removeEventListener("visibilitychange", this.onVisibility);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("resize", this.onScroll);
+    if (this.recedeFrame !== undefined) cancelAnimationFrame(this.recedeFrame);
     this.destroyVideo();
     this.embla?.destroy();
     this.root.remove();
@@ -182,6 +191,23 @@ export class MediaBackgroundManager {
     this.loadTimer = undefined;
   }
 
+  private scheduleRecede(): void {
+    if (this.recedeFrame !== undefined) return;
+    this.recedeFrame = requestAnimationFrame(() => {
+      this.recedeFrame = undefined;
+      this.updateRecede();
+    });
+  }
+
+  // Set on the stage root rather than :root so a scroll frame only restyles the stage.
+  private updateRecede(): void {
+    const hero = document.querySelector<HTMLElement>("#page-header, #home_top");
+    const value = recedeProgress(window.scrollY, hero?.offsetHeight || window.innerHeight);
+    if (value === this.recede) return;
+    this.recede = value;
+    this.root.style.setProperty("--recede", String(value));
+  }
+
   private handleVisibility(): void {
     if (document.hidden) this.autoplay?.stop();
     else this.autoplay?.play();
@@ -199,4 +225,11 @@ export function resolveBackgroundMode(
     (!options.enabled || !options.userEnabled || options.mobileBlocked || options.reducedMotion)
     ? "wallpaper"
     : requested;
+}
+
+// 0 over the hero, 1 once the article body is reached. Tracks scroll directly;
+// stage.css adds the eased transition only when motion is allowed.
+export function recedeProgress(scrollY: number, heroHeight: number): number {
+  const progress = Math.min(Math.max(scrollY / Math.max(heroHeight, 1), 0), 1);
+  return Math.round(progress * 100) / 100;
 }

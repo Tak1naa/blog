@@ -1,0 +1,52 @@
+{
+  "reference_sha256": "afff1c0da36b94209334bbcad077451dc2c77823e3e9d6938d07a6529e84a5a1",
+  "method": "built-in image_gen; native reference-registered layer assembly; PSD2Live 1.4.2 export",
+  "psd2live_release_sha256": "a5d5bcc243008e36134af7f2a945d8783eb29f3b088b03d736e8fc11b743271f",
+  "export_command": "java -Xmx512m -XX:ActiveProcessorCount=2 -Djava.awt.headless=true -cp PSD2LIVE_APP_DIR/* io.github.psd2live.MainKt --input takina-chibi.psd --output OUTPUT --atlas 2048 --head-strength 0.045 --body-strength 0.025 --no-cmo3 --lang en",
+  "peak_export_rss_kib": 419044,
+  "model_entry_version": "reference-278fdeef1009",
+  "assets": {
+    "hair-reference-full.raw.png": {
+      "sha256": "b715c5b5147d95a0ea8c5bcb25ef57ee816aa08d8e84ada92e930d73304e76be",
+      "bytes": 1069793
+    },
+    "front-reference.raw.png": {
+      "sha256": "735bc4f09464000641080f1547cf46c118989c8fc008df71a553436a6cb45e38",
+      "bytes": 953376
+    },
+    "face-reference.raw.png": {
+      "sha256": "1e29c48389ff3bb64e7b1131d353f2ce8bcfe8d81a0ff041973595ffc129c206",
+      "bytes": 778552
+    },
+    "composite-reference.png": {
+      "sha256": "b99d837ff61b9433c0ddcbf3d029e706f37c52a9ce19b96c3d84fa89a69d3385",
+      "bytes": 1275617
+    },
+    "takina-chibi.psd": {
+      "sha256": "bb8cae726f4faf1dea646add28210877a2e5f58e1b2f07ca610d0a75df193069",
+      "bytes": 4623296
+    }
+  },
+  "runtime": {
+    "takina-chibi.sleepy.exp3.json": "c0e421558384af8637985ad7d34173e944a171c0bdf34c258aea33ff7753a29a",
+    "takina-chibi.idle.motion3.json": "a32ca6a85d2ae68d5b71ba4d7a74db5ce35a5b634882bd0f83ce84363f597722",
+    "takina-chibi.model3.json": "278fdeef10098f57a13b828798e3112bc920c967e1a55bf9436b9df9e640f129",
+    "takina-chibi.physics3.json": "3c9299431c1f86d2fe936b84a9920c6bb9af3a3a87d2edec3f561fbee327abe7",
+    "takina-chibi.wink.exp3.json": "f8594678540b00ec6c62d8fcf47ced791c0f5ef257f9fe316f6e67ef9d9570f7",
+    "takina-chibi.laugh.exp3.json": "e95d8690273e6bd277ff45043b859656a45cec5e1e8d7b390e3389c9d8f69588",
+    "takina-chibi.speaking.exp3.json": "176a04aaf7c3f45e9c7b58cbd3ce28ede4951d73e074c2ef75b46edd4307d5b2",
+    "takina-chibi.carried.exp3.json": "fd1801af7249816b75a6f252596892ff2cca76b844ab3e79c3ff6f1acaba9158",
+    "takina-chibi.nod.motion3.json": "bfd9a247d5ec8479145c2dddfd5fdbf03e1c46df8d7460f07badd146c1e19418",
+    "takina-chibi.neutral.exp3.json": "4609e74e55bcf9e69b14fe0c30850484ab3f7b4891eb790aed8f28f492a85d06",
+    "takina-chibi.blink.motion3.json": "399f91b7bfac0666f589ab7c6daace5e33e5c6d6e7c6e7ca4024b6db48a65110",
+    "takina-chibi.shake.motion3.json": "9714b72b47dba8e33b6b08d0f9e84c77309a6ce6c98d2a3815c3a59d69163b01",
+    "takina-chibi.pout.exp3.json": "7da17b4cb4374e2b24f061d968aaa9e9685243a794a84d62152e56157b2ff642",
+    "takina-chibi.psd2live.json": "229798c2e8c01457a2c78948e515d3810c19b2eb0608cdc2fd3e6dee373c7abb",
+    "takina-chibi.cdi3.json": "da96f6f8c027926bfccf87d3104d75badfb62e43a88fa1620599f9347559ff23",
+    "takina-chibi.smile.exp3.json": "8a3c06aa59391c1a212819a46e7746b0d2adb1f30ca081a9b02e093e9eed1544",
+    "takina-chibi.curious.exp3.json": "51010341cfd6e3b84ea44cd54f4498f6626cdeb790fe9e9c4ea2e8bf65d5c495",
+    "takina-chibi.moc3": "c21b5d567996e105c7e38361aaf50a486d13f7e4676d713d653a66cd8530856e",
+    "takina-chibi.surprised.exp3.json": "74525b840e672a94f094274d0367565e9d5cc72b187f708d7847df411e3527c7",
+    "takina-chibi.2048/texture_00.png": "b1186517aed199f14da52e199767a3d245c41369ecef0cec6b0adea04a444183"
+  }
+}

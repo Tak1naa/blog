@@ -21,7 +21,7 @@ for (const width of [1365, 393]) {
       const response = await page.goto(baseURL!);
       expect(response?.status()).toBe(200);
       await expect(page.locator("html")).toHaveClass(/ff-enhancements-ready/);
-      const selectors = width > 768 ? [".post_bg", 'img[alt="头像"]'] : [".post_bg"];
+      const selectors = width > 768 ? [".post_bg", 'img[alt="Avatar"]'] : [".post_bg"];
       for (const selector of selectors) {
         const img = page.locator(selector).first();
         await img.scrollIntoViewIfNeeded();

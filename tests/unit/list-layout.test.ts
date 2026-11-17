@@ -8,7 +8,7 @@ describe("category listing flow", () => {
     runInNewContext(readFileSync("scripts/list-layout.js", "utf8"), {
       hexo: { extend: { filter: { register: (_name: string, fn: typeof render) => { render = fn; } } } },
     });
-    const bar = '<div class="home-category-bar category-in-bar"><a href="/archives/">全部文章</a></div>';
+    const bar = '<div class="home-category-bar category-in-bar"><a href="/archives/">Item</a></div>';
     const input = `<main class="layout layout--category" id="content-inner">${bar}<div class="home-layout-row"><div id="category"><div id="recent-posts">cards</div></div></div></main>`;
     const result = render(input);
     expect(result).toContain(`<div id="category">${bar}<div id="recent-posts">`);

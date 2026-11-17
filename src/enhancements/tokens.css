@@ -1,0 +1,40 @@
+/* Nocturne + Takina design tokens. Layered so any later layer or unlayered
+   rule can refine them without !important. */
+@layer tokens {
+  :root {
+    /* Palette */
+    --takina-night: #0b0d14;
+    --surface-1: #11131a;
+    --surface-2: #161822;
+    --surface-3: #1c1f2c;
+    --border-subtle: rgb(255 255 255 / 6%);
+    --border: rgb(255 255 255 / 9%);
+
+    /* Accents. Crimson is reserved for the active indicator, danger and highlight. */
+    --takina-aqua: #5b8def;
+    --takina-lavender: #8b93ff;
+    --lycoris-crimson: #e05260;
+    --sakura: #e8a3b5;
+
+    /* Fluid type, 360px → 1440px viewports */
+    --fs-xs: clamp(0.75rem, 0.72rem + 0.13vw, 0.8125rem);
+    --fs-sm: clamp(0.8125rem, 0.78rem + 0.17vw, 0.9375rem);
+    --fs-base: clamp(0.9375rem, 0.9rem + 0.19vw, 1.0625rem);
+    --fs-lg: clamp(1.0625rem, 1rem + 0.31vw, 1.25rem);
+    --fs-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5625rem);
+    --fs-2xl: clamp(1.5rem, 1.33rem + 0.83vw, 2rem);
+    --fs-display: clamp(2rem, 1.58rem + 2.08vw, 3.25rem);
+
+    /* Radii */
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+
+    /* Elevation: a cool aqua/lavender ambient rim (inset 1px) over a night-tinted drop. */
+    --rim: inset 0 1px 0 rgb(139 147 255 / 8%), inset 0 0 0 1px rgb(91 141 239 / 5%);
+    --shadow-1: var(--rim), 0 1px 2px rgb(5 6 12 / 40%), 0 2px 8px -2px rgb(91 141 239 / 8%);
+    --shadow-2: var(--rim), 0 4px 12px -2px rgb(5 6 12 / 45%), 0 8px 24px -8px rgb(91 141 239 / 12%);
+    --shadow-3: var(--rim), 0 12px 32px -6px rgb(5 6 12 / 55%), 0 18px 48px -12px rgb(139 147 255 / 16%);
+  }
+}

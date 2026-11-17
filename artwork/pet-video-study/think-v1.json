@@ -1,0 +1,17 @@
+{
+  "source_sha256": "8ae3e4b17c5bb9c36b6d002ca9ff3fa1136dbc86226c7b8dcf0e59b180538aad",
+  "duration_seconds": 8,
+  "fps": 24,
+  "dimensions": [
+    624,
+    696
+  ],
+  "audio": false,
+  "filter": "chromakey=0x0FC81F:0.14:0.06,format=gbrap,geq=r='r(X,Y)':g='if(gt(g(X,Y),1.35*max(r(X,Y),b(X,Y))),min(g(X,Y),max(r(X,Y),b(X,Y))),g(X,Y))':b='b(X,Y)':a='alpha(X,Y)',scale=1230:692,pad=1280:720:25:22:color=0x00000000,crop=624:696:328:8,format=yuva420p",
+  "bytes": 832885,
+  "generator_model": "user-provided; not specified",
+  "loop_seamless": false,
+  "notes": "Scaled and aligned to stretch clip feet and head baseline",
+  "status": "integrated into companion v1; Chromium alpha validated; Safari unverified",
+  "published_path": "/media/companion/think-v1.webm"
+}

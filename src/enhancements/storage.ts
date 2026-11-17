@@ -2,6 +2,7 @@ import type { UserSettings } from "./types";
 
 const SETTINGS_KEY = "blog-experience:v1";
 const MUSIC_KEY = "blog-music:v1";
+const LOCALE_KEY = "blog-locale:v1";
 
 export function loadSettings(defaults: UserSettings): UserSettings {
   try {
@@ -55,6 +56,33 @@ export function saveMusicState(state: MusicState): void {
   }
 }
 
+export function loadLocale(): string | undefined {
+  try {
+    return localStorage.getItem(LOCALE_KEY) ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function saveLocale(locale: string): void {
+  try {
+    localStorage.setItem(LOCALE_KEY, locale);
+  } catch {
+    // Ignore unavailable storage.
+  }
+}
+
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
+}
+
+export const COMPANION_POSITION_KEY = "takina-live2d-position-v1"; // gitleaks:allow -- Public localStorage preference name.
+
+/** Forget a dragged companion position so she returns to her dock perch. */
+export function clearCompanionPosition(): void {
+  try {
+    localStorage.removeItem(COMPANION_POSITION_KEY);
+  } catch {
+    // Without storage there is no saved position to clear.
+  }
 }

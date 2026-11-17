@@ -4,7 +4,7 @@ const { z } = require("zod");
 
 const mediaPath = z.string().min(1).refine(
   (value) => value.startsWith("/") || /^https?:\/\//.test(value),
-  "媒体地址必须是站内绝对路径或 HTTP(S) URL",
+  "config HTTP(S) URL",
 );
 
 const experienceSchema = z.object({
@@ -20,7 +20,7 @@ const experienceSchema = z.object({
       character: z.string().min(1),
       source: z.url().startsWith("https://"),
     })).min(1).refine((items) => new Set(items.map((item) => item.text)).size === items.length,
-      "语料不能重复"),
+      "config"),
   }),
   background: z.object({
     defaultMode: z.enum(["wallpaper", "video"]),
@@ -56,6 +56,7 @@ const experienceSchema = z.object({
     modelPaths: z.array(mediaPath).min(1),
     welcomeMessages: z.array(z.string()),
     idleMessages: z.array(z.string()),
+    videos: z.object({ stretch: mediaPath.optional(), think: mediaPath.optional(), look: mediaPath.optional() }).optional(),
   }),
   effects: z.object({
     enabled: z.boolean(),
@@ -81,11 +82,42 @@ hexo.extend.generator.register("experience-config", function generateExperienceC
     const issues = parsed.error.issues
       .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
       .join("\n");
-    throw new Error(`source/_data/experience.yml 配置无效:\n${issues}`);
+    throw new Error(`source/_data/experience.yml config:\n${issues}`);
   }
 
-  return {
+  const fs = require("fs");
+  const path = require("path");
+  const localesDir = path.join(hexo.source_dir, "_data", "locales");
+  const localePacks = [];
+  const routes = [];
+  if (fs.existsSync(localesDir)) {
+    for (const file of fs.readdirSync(localesDir).sort()) {
+      if (!file.endsWith(".json")) continue;
+      const code = file.slice(0, -5);
+      try {
+        const content = fs.readFileSync(path.join(localesDir, file), "utf8");
+        const raw = JSON.parse(content);
+        if (raw && typeof raw.label === "string") {
+          const url = `/custom/locales/${file}`;
+          localePacks.push({ code, label: raw.label, url });
+          routes.push({ path: `custom/locales/${file}`, data: content });
+        }
+      } catch {
+        // Ignore malformed locale pack
+      }
+    }
+  }
+
+  routes.push({
     path: "custom/config.json",
-    data: JSON.stringify(parsed.data, null, 2),
-  };
+    data: JSON.stringify({
+      ...parsed.data,
+      i18n: {
+        defaultLocale: "en",
+        locales: localePacks,
+      },
+    }, null, 2),
+  });
+
+  return routes;
 });

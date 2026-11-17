@@ -1,3 +1,4 @@
+import { t } from "./i18n";
 import type { AnimeQuote, ExperienceConfig } from "./types";
 
 export class QuoteSource {
@@ -18,7 +19,17 @@ export class QuoteSource {
 export function showQuoteSource(root: Element, quote: AnimeQuote): void {
   const link = root.querySelector<HTMLAnchorElement>(".ff-quote-source");
   if (!link) return;
-  link.textContent = `《${quote.work}》 · ${quote.character}`;
+  link.textContent = t("quotes.source", { work: quote.work, character: quote.character });
   link.href = quote.originalSource ?? quote.source;
-  link.title = "查看语录出处（中文译法可能因版本不同而异）";
+  link.title = t("quotes.sourceTitle");
+  link.dataset.work = quote.work;
+  link.dataset.character = quote.character;
+}
+
+/** Re-label every rendered quote attribution after a locale switch. */
+export function refreshQuoteSources(root: ParentNode = document): void {
+  root.querySelectorAll<HTMLAnchorElement>(".ff-quote-source[data-work]").forEach((link) => {
+    link.textContent = t("quotes.source", { work: link.dataset.work ?? "", character: link.dataset.character ?? "" });
+    link.title = t("quotes.sourceTitle");
+  });
 }

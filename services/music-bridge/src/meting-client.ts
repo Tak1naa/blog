@@ -64,7 +64,7 @@ export class MetingClient implements MusicProvider {
     const raw = parseJson(await this.formattedClient.url(id, 320));
     const item = Array.isArray(raw) ? raw[0] : raw;
     const url = getString(item, "url");
-    if (!url || !/^https?:\/\//.test(url)) throw new Error("上游未返回可用播放地址");
+    if (!url || !/^https?:\/\//.test(url)) throw new Error("MusicService");
     return url;
   }
 
@@ -78,7 +78,7 @@ export class MetingClient implements MusicProvider {
     const raw = parseJson(await this.formattedClient.pic(id, 500));
     if (typeof raw === "string" && /^https?:\/\//.test(raw)) return raw;
     const url = getString(raw, "url");
-    if (!url || !/^https?:\/\//.test(url)) throw new Error("上游未返回可用封面地址");
+    if (!url || !/^https?:\/\//.test(url)) throw new Error("MusicService");
     return url;
   }
 }
@@ -87,7 +87,7 @@ export function normalizePlaylistResponse(raw: unknown): BridgeTrack[] {
   assertSuccessfulResponse(raw);
   const rows = Array.isArray(raw) ? raw : extractArray(raw);
   if (!rows.length) {
-    throw new MetingUpstreamError("netease_invalid_response", "网易云未返回歌单曲目");
+    throw new MetingUpstreamError("netease_invalid_response", "MusicService");
   }
 
   return rows.flatMap((item) => {
@@ -99,7 +99,7 @@ export function normalizePlaylistResponse(raw: unknown): BridgeTrack[] {
       ? rawArtists
       : Array.isArray(track.artist)
         ? track.artist.map(String)
-        : [String(track.artist ?? "未知艺术家")];
+        : [String(track.artist ?? "MusicService")];
     const pictureId = track.pic_id ?? track.al?.pic_str ?? track.al?.pic ?? trackId;
     return [{
       id: `netease-${trackId}`,
@@ -145,10 +145,10 @@ function assertSuccessfulResponse(value: unknown): void {
   if (code === 401 || code === 301) {
     throw new MetingUpstreamError(
       "netease_auth_required",
-      `网易云拒绝匿名请求（code=${String(code)}），请配置有效 NETEASE_COOKIE`,
+      `MusicService（code=${String(code)}），MusicService NETEASE_COOKIE`,
     );
   }
-  throw new MetingUpstreamError("netease_upstream_error", `网易云接口返回 code=${String(code)}`);
+  throw new MetingUpstreamError("netease_upstream_error", `MusicService code=${String(code)}`);
 }
 
 function getString(value: unknown, key: string): string | undefined {

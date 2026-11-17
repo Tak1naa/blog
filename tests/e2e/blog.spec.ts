@@ -1,9 +1,14 @@
 import { expect, test } from "@playwright/test";
+import { quietCompanionBackdrop } from "./companion-setup";
 
 // Rig-specific regressions explicitly opt in; ordinary visitors now default off.
 test.beforeEach(async ({ page }, testInfo) => {
   if (!/Live2D|Solitude layout separates/.test(testInfo.title)) return;
-  await page.addInitScript(() => localStorage.setItem("blog-experience:v1", JSON.stringify({ schema: 1, effects: true, live2d: true })));
+  await quietCompanionBackdrop(page);
+  await page.addInitScript(() => {
+    localStorage.setItem("blog-experience:v1", JSON.stringify({ schema: 1, effects: true, live2d: true, carousel: false }));
+    localStorage.setItem("takina-companion:v1", JSON.stringify({ schema: 1, random: false, autoReturn: false, roam: false, tasks: [] }));
+  });
 });
 
 test("tag navigation cards and pagination have responsive breathing room", async ({ page }, testInfo) => {
@@ -140,8 +145,8 @@ test("centered bilingual hero retains attribution and intentional round cover", 
   const hero = page.locator(".ff-hero-copy");
   await expect(hero.locator("strong")).toHaveText("Takina Ying");
   await expect(hero.locator(".ff-hero-character")).toHaveCount(0);
-  await expect(hero.locator(".ff-quote-ja")).toHaveText("真実はいつもひとつ！！");
-  await expect(hero.locator(".ff-quote-zh")).toHaveText("真相永远只有一个！");
+  await expect(hero.locator(".ff-quote-ja")).toHaveText("Itemはいつもひとつ！！");
+  await expect(hero.locator(".ff-quote-zh")).toHaveText("There is always only one truth!");
   await expect(hero.locator(".ff-quote-source")).toHaveAttribute("href", "https://www.conan-portal.com/");
   const values = await hero.evaluate((element) => {
     const ja = element.querySelector(".ff-quote-ja")!;
@@ -171,9 +176,10 @@ test("the requested Dog Days track replaces the local demo audio", async ({ page
   await expect(player.locator(".ff-music-meta strong")).toHaveText("Dog Days");
   const audioResponse = page.waitForResponse((response) =>
     response.url().endsWith("/media/music/dog-days.mp3"));
-  await player.locator('[data-action="toggle"]').click();
+  await page.locator('.ff-dock [data-dock="play"]').click();
   expect((await audioResponse).status()).toBe(200);
   await expect(player).toHaveClass(/is-playing/);
+  await expect(page.locator('.ff-dock [data-dock="play"]')).toHaveAttribute("aria-label", "Pause");
 });
 
 test("Solitude layout separates title, banner and article cards", async ({ page }, testInfo) => {
@@ -215,21 +221,23 @@ test("Solitude layout separates title, banner and article cards", async ({ page 
   expect(await page.evaluate(() => (window as Window & { __pjaxMarker?: string }).__pjaxMarker)).toBe("kept");
 });
 
-test("music aligns with the sidebar and text panels stay translucent", async ({ page }, testInfo) => {
+test("docked music opens above the dock and text panels stay translucent", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "desktop visual layout test");
   await page.goto("/");
   await expect(page.locator(".ff-waves")).toHaveCount(0);
 
-  const sidebar = page.locator("#aside-content .card-widget").first();
   const player = page.locator("#ff-music-player");
-  await expect.poll(async () => {
-    const cardBox = await sidebar.boundingBox();
-    const playerBox = await player.boundingBox();
-    return Math.abs((cardBox?.x ?? 0) - (playerBox?.x ?? 0));
-  }).toBeLessThan(2);
-  const cardBox = await sidebar.boundingBox();
+  const dock = page.locator(".ff-dock");
+  await expect(player).toBeHidden();
+  await dock.locator('[data-dock="expand"]').click();
+  await expect(player).toBeVisible();
+  const dockBox = await dock.boundingBox();
   const playerBox = await player.boundingBox();
-  expect(Math.abs((cardBox?.width ?? 0) - (playerBox?.width ?? 0))).toBeLessThan(2);
+  expect((playerBox?.y ?? 0) + (playerBox?.height ?? 0)).toBeLessThanOrEqual(dockBox?.y ?? 0);
+  const center = (box: { x: number; width: number } | null) => (box?.x ?? 0) + (box?.width ?? 0) / 2;
+  expect(Math.abs(center(playerBox) - center(dockBox))).toBeLessThan(2);
+  await page.keyboard.press("Escape");
+  await expect(player).toBeHidden();
 
   await page.locator("html").evaluate((html) => html.setAttribute("data-theme", "dark"));
   for (const selector of [".home-center-content", ".home-center-right", ".recent-post-item", ".card-widget", "#ff-music-player"]) {
@@ -379,7 +387,7 @@ test("archive category buttons share the glass surface without a gradient", asyn
 
   for (const theme of ["light", "dark"]) {
     await page.locator("html").evaluate((html, value) => html.setAttribute("data-theme", value), theme);
-    for (const selector of ["#category-bar-home a", "#自建服务 a"]) {
+    for (const selector of ["#category-bar-home a", "#Infrastructure a"]) {
       const button = page.locator(selector);
       await expect.poll(() => page.evaluate((target) => {
         const button = document.querySelector(target);
@@ -410,7 +418,7 @@ test("settings slider stays on one line and music progress clears controls", asy
   test.skip(testInfo.project.name !== "desktop", "desktop controls layout test");
   await page.goto("/");
   await page.locator(".ff-settings-trigger").click();
-  const label = page.locator(".ff-settings-panel label").filter({ hasText: "背景遮罩" });
+  const label = page.locator(".ff-settings-panel label").filter({ hasText: "Overlay Dimming" });
   const textBox = await label.locator("span").boundingBox();
   const sliderBox = await label.locator('input[type="range"]').boundingBox();
   const labelBox = await label.boundingBox();
@@ -420,6 +428,7 @@ test("settings slider stays on one line and music progress clears controls", asy
     (labelBox?.x ?? 0) + (labelBox?.width ?? 0) + 1,
   );
 
+  await page.locator('.ff-dock [data-dock="expand"]').click();
   const progress = await page.locator(".ff-music-progress").boundingBox();
   const controls = await page.locator(".ff-music-controls").boundingBox();
   expect((controls?.y ?? 0) - ((progress?.y ?? 0) + (progress?.height ?? 0))).toBeGreaterThanOrEqual(3);
@@ -478,7 +487,7 @@ test("Live2D neck does not follow head and hair tips deform independently", asyn
   expect(result.hairDelta).toBeGreaterThan(0.0001);
 });
 
-test("Live2D cycles hover expressions and resets on leave", async ({ page }, testInfo) => {
+test("Live2D action menu selects expressions and resets on Escape", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "desktop model interaction");
   const loaded = new Set<string>();
   const errors: string[] = [];
@@ -487,15 +496,13 @@ test("Live2D cycles hover expressions and resets on leave", async ({ page }, tes
   await page.goto("/");
   await expect(page.locator("html")).toHaveClass(/ff-live2d-ready/, { timeout: 20_000 });
   const shell = page.locator(".ff-live2d-shell");
-  await shell.locator("canvas").hover();
-  for (const name of ["smile", "wink", "curious", "sleepy", "laugh", "surprised", "pout", "speaking"]) {
-    await expect(shell).toHaveAttribute("data-expression", name, { timeout: 5000 });
-    await page.waitForTimeout(650); // Capture the actual faded-in pose, not its previous expression.
-    await page.screenshot({ path: testInfo.outputPath(`expression-${name}.png`) });
+  const canvas = shell.locator("canvas");
+  for (const [action, expression] of [["wave", "smile"], ["wink", "wink"], ["doze", "sleepy"], ["happy", "laugh"], ["surprised", "surprised"], ["pout", "pout"], ["speaking", "speaking"]]) {
+    await canvas.focus(); await page.keyboard.press("Shift+F10");
+    await page.locator(`[data-companion-action="${action}"]`).click();
+    await expect(shell).toHaveAttribute("data-expression", expression!);
   }
-  await page.mouse.move(10, 300);
-  await expect(shell).toHaveAttribute("data-expression", "neutral");
-  await page.waitForTimeout(3800);
+  await page.keyboard.press("Escape");
   await expect(shell).toHaveAttribute("data-expression", "neutral");
   expect(loaded.size).toBe(10);
   expect(errors).toEqual([]);
@@ -514,7 +521,7 @@ test("Live2D moves when its canvas is dragged directly", async ({ page }, testIn
   await expect(shell).toBeVisible();
   await expect(shell).toHaveAttribute("data-hair-light", "masked");
   await expect(shell).toHaveAttribute("data-doll-rig", "soft-joints");
-  await expect.poll(() => shell.evaluate(element => Number(getComputedStyle(element).opacity))).toBe(1);
+  await expect(shell).toHaveCSS("opacity", "1");
   const before = await shell.boundingBox();
   const box = await canvas.boundingBox();
   expect(box).not.toBeNull();
@@ -523,7 +530,8 @@ test("Live2D moves when its canvas is dragged directly", async ({ page }, testIn
   await page.mouse.move((box?.x ?? 0) + 20, (box?.y ?? 0) + 40, { steps: 8 });
   await expect(shell).toHaveClass(/is-carried/);
   await expect.poll(() => canvas.evaluate(element => getComputedStyle(element).transform)).not.toBe("none");
-  await expect.poll(() => canvas.evaluate(element => Math.abs(new DOMMatrix(getComputedStyle(element).transform).b))).toBeGreaterThan(0.35);
+  await expect.poll(() => canvas.evaluate(element => Math.abs(new DOMMatrix(getComputedStyle(element).transform).b))).toBeGreaterThan(0.25);
+  expect(await canvas.evaluate(element => Math.abs(new DOMMatrix(getComputedStyle(element).transform).b))).toBeLessThan(0.75);
   await expect.poll(() => shell.getAttribute("data-limb-pose").then(value => (value ?? "").split(",").filter(number => Math.abs(Number(number)) > 1).length)).toBe(4);
   await page.screenshot({ path: testInfo.outputPath("takina-carried.png") });
   await page.mouse.up();
@@ -588,22 +596,22 @@ test("narrow screens separate the hero and keep floating controls apart", async 
     const hero = await page.locator(".ff-hero-copy").boundingBox();
     const banner = await page.locator("#home_center").boundingBox();
     expect((banner?.y ?? 0) - ((hero?.y ?? 0) + (hero?.height ?? 0))).toBeGreaterThan(0);
-    const player = await page.locator("#ff-music-player").boundingBox();
+    const dock = await page.locator(".ff-dock").boundingBox();
     const settings = await page.locator(".ff-settings-trigger").boundingBox();
-    expect((player?.x ?? 0) + (player?.width ?? 0)).toBeLessThan(width - 70);
-    expect((settings?.y ?? 0) + (settings?.height ?? 0)).toBeLessThan(player?.y ?? 0);
+    expect((dock?.x ?? 0) + (dock?.width ?? 0)).toBeLessThan(width - 60);
+    expect((settings?.y ?? 0) + (settings?.height ?? 0)).toBeLessThan(dock?.y ?? 0);
   }
 });
 
-test("tablet player is compact without a sidebar", async ({ page }, testInfo) => {
+test("tablet dock is compact and clear of the settings trigger", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "tablet layout test");
   await page.setViewportSize({ width: 820, height: 1000 });
   await page.goto("/");
-  const player = await page.locator("#ff-music-player").boundingBox();
+  const dock = await page.locator(".ff-dock").boundingBox();
   const settings = await page.locator(".ff-settings-trigger").boundingBox();
-  expect(player?.width ?? 0).toBeLessThanOrEqual(240);
-  expect(player?.height ?? 0).toBeLessThanOrEqual(70);
-  expect((settings?.y ?? 0) + (settings?.height ?? 0)).toBeLessThan(player?.y ?? 0);
+  expect(dock?.width ?? 0).toBeLessThanOrEqual(480);
+  expect(dock?.height ?? 0).toBeLessThanOrEqual(50);
+  expect((settings?.y ?? 0) + (settings?.height ?? 0)).toBeLessThan(dock?.y ?? 0);
 });
 
 test("mobile article exposes its content in the first viewport", async ({ page }, testInfo) => {

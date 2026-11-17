@@ -1,0 +1,21 @@
+{
+  "source_sha256": "a2a67ebb1b47495185c3a37b00a1c5f787f0f1231c5774bc867896bccd068188",
+  "reference_sha256": "afff1c0da36b94209334bbcad077451dc2c77823e3e9d6938d07a6529e84a5a1",
+  "generator_model": "user-provided; not specified",
+  "duration_seconds": 8,
+  "fps": 24,
+  "crop": {
+    "x": 328,
+    "y": 8,
+    "width": 624,
+    "height": 696
+  },
+  "audio": false,
+  "filter": "crop=624:696:328:8,chromakey=0x09CE20:0.14:0.06,format=gbrap,geq=r='r(X,Y)':g='if(gt(g(X,Y),1.35*max(r(X,Y),b(X,Y))),min(g(X,Y),max(r(X,Y),b(X,Y))),g(X,Y))':b='b(X,Y)':a='alpha(X,Y)',format=yuva420p",
+  "encoder": "libvpx-vp9",
+  "crf": 28,
+  "bytes": 1155169,
+  "status": "integrated into companion v1; Chromium alpha validated; Safari unverified",
+  "loop_seamless": false,
+  "published_path": "/media/companion/stretch-v1.webm"
+}

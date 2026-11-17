@@ -1,69 +1,45 @@
-# Takina 轻量模型状态
+# Live2D 标准图样式重制 / Reference restyle
 
-## 脸部白框修复（2026-10-06）
+2026-11-17，目标为本目录的 `base-transparent.png`。修改仅位于用户指定的备份工作目录，未提交、推送或部署。
 
-- 合并鼻部细节时，ImageMagick `-layers merge` 使用默认白色背景，将脸部四角填成不透明白色；不是网页描边或头发贴图的问题。
-- 分层脚本显式使用 `-background none`，脸部和整张合成图保留透明通道，并加入脸部四角 alpha 为 0 的导出前检查。保留436×390脸图注册位置与现有绘画，不重生成角色。
-- PSD2Live1.4.2重新导出2048贴图，沿用头部0.045／身体0.025及十组表情。Java堆限制1024MiB，实测峰值325388KiB（约318MiB）。
-- 模型入口、MOC和纹理引用带版本号，避免刷新时混用旧白框贴图。修改后已重新构建本地预览。
+## 外观与模型
 
-## 第一版脸部与连续头部角度（2026-10-06，后续修正）
+- 恢复标准图的长直尖刘海、前后发轮廓、蓝灰硬高光、暖色脸部与原始制服配色。可分离的可见绘画直接复用标准图像素，不再把前后发独立缩放或向下移动 32px。
+- 内置 **image_gen** 制作连续后发补绘、前发透明蒙版与无五官脸部底稿。原始输出为 `hair-reference-full.raw.png`、`front-reference.raw.png`、`face-reference.raw.png`；生成提示词见 [PROMPTS.md](PROMPTS.md)。隐藏区域允许补绘，可见细节尽量保留原图。
+- 衣服保留旧的被遮挡袖口/脖子底稿，并恢复原图的可见制服、手、腿和鞋；限定颜色蒙版和衣服 alpha，避免把头发扩进身体网格。脸部不再烘焙刘海、眼睛或闭口，眼睛和张闭口继续独立。
+- 移除网页对角色的降低饱和度、压暗/提亮滤镜，保留柔和投影和现有移动发光。三段透明视频与看板娘交互逻辑没有改动。
+- 使用官方 [PSD2Live 1.4.2](https://github.com/tsunehimatoi/psd2live/releases/tag/v1.4.2) 重新导出真正的 MOC3、2048 图集、物理和动作文件。仍有 11 个网格、14 个变形器、18 个参数、前后发物理和 10 组表情；没有用单张静态图替代模型。
+- 当前配置入口版本 `reference-278fdeef1009`；MOC3 与图集也带内容摘要查询参数，避免新旧资源混用。
+- 修复并防护 RGB/灰度混合蒙版造成的脸颊半透明色带与嘴周光圈：蒙版合并前统一灰度，并相加补齐嘴周抗锯齿覆盖，并在导出前验证蒙版无色差、脸部采样点全不透明。
 
-- 撤销上一轮眼图内移，恢复第一版 `base-transparent.png` 的眼口绘画和原始图层坐标；脸部颜色／底稿使用第一版 `face-backpaint.png`，由已提取的有机脸部alpha约束，不重新生成新脸。原鼻部细节合并回脸图层。保留独立后发、刘海下移、十组表情及四肢软变形。
-- 头部不再在SDK默认idle/look和增强层强制角度之间切换。可见时同一RAF持续输出三个平滑角度，目光限制横向±6°、俯仰±4°；提起时俯仰目标−5°平滑靠近，而非直接跳到−10°。松手也不清空角度覆盖，避免突然返回SDK的大角度动作。
-- 页面隐藏取消RAF，重新可见恢复；销毁取消RAF和所有监听器。头部连续驱动与SDK原有绘制循环同时存在，不新增Canvas或依赖；低配设备性能和长时间内存仍需后续专项测试。
-- 标签页的标签导航原为绝对定位，导致仅改padding无效；改为文档流，导航／卡片／分页按桌面24px、手机16px分隔并保留外层内边距。
+## 文件与复现
 
-## 旧稿脸型、嘴部及软关节（2026-10-06）
+- 可编辑 PSD：`takina-chibi.psd`。
+- 新拆层合成预览：`composite-reference.png`；旧预览 `composite-v3.png` 保留。
+- 构建入口：`build-layers.sh` → `build-reference-layers.sh`，使用现有 ImageMagick 拼装 PSD。
+- 导出入口：`export-reference-model.sh`。设置 `PSD2LIVE_APP_DIR` 为官方 1.4.2 解包后的 `lib/app` 目录，再用 `bash` 执行；脚本自动备份当前运行包、重建、导出、生成表情并更新模型入口摘要，之后仍须重建站点。
+- 发布源：`source/media/live2d/takina-chibi/`；模型配置在 `source/_data/experience.yml`。
+- 本次替换前的模型、分层和相关源码备份在 `archive/before-reference-restyle-20261117/`，附 SHA-256 清单。恢复时只复制需要的文件，避免覆盖后续无关改动。
+- `reference-provenance.json` 保存素材摘要和导出信息。官方发布包 SHA-256 为 `a5d5bcc243008e36134af7f2a945d8783eb29f3b088b03d736e8fc11b743271f`，与此前使用的发行包一致。Java 堆限制 512 MiB，导出峰值 RSS 419,044 KiB。
 
-- 根据旧 `matte-face-backpaint.png` 重新提取脸部底稿 `face-restored.raw.png`，注册436×390于294,270；原眼图不重绘，眼中心间距从254缩至230原画像素。保留上一轮刘海下移32px，不恢复硬高光。提取是生成补绘，不声称与旧稿逐像素相同。
-- 增加真正独立的 `mouth-open.raw.png` 口腔，PSD的 `mouth open` 标签由PSD2Live绑定 `ParamMouthOpenY`；闭口图仍保留。十个Cubism表情包含原六组及laugh、surprised、pout、speaking，所有表情显式复位开口参数。悬停轮换八组，说话时持续开合。
-- 修复widget静音lip-sync在表情之后覆盖开口的问题：用公开setParams最后写入平滑开口值，离开、隐藏和停止回摆时复位，避免只有表情文件而没有可见口型。
-- PSD2Live把74px口腔适配成约30px旧闭口宽度；运行时对张嘴状态下的口腔与上下唇围绕共同中心有限扩展（最大宽2.1倍、高1.8倍），闭口不变，每次绘制后还原SDK缓冲。该补偿仅限当前模型。
-- `live2d-doll.ts` 为四肢提供肩／髋锚点的有界软变形：挥手、笑时晃动、惊讶外摆、嘟嘴收拢；拖动时惯性滞后与阻尼回摆。适配l2d-widget0.1.2实例的doDraw，在Cubism更新后、绘制前变形真实Topwear网格，绘制后恢复缓冲，销毁还原实例方法；不改全局原型、不改SDK包。它不是独立四肢骨骼或完整布娃娃刚体模拟，大角度仍受自动网格限制。
-- 本次仍使用官方PSD2Live1.4.2，9个PSD图层导出11个网格（含上下唇）、18个参数及2048贴图，导出峰值344092KiB（约336MiB），未使用默认8GB源码构建。
+```bash
+bash artwork/live2d/takina-chibi/build-layers.sh
+PSD2LIVE_APP_DIR=/path/to/psd2live/lib/app bash artwork/live2d/takina-chibi/export-reference-model.sh
+```
 
+## 验证边界
 
-## 刘海高度修正（2026-10-06）
+`reference-style-check.json` 比较的是原始坐标下的静止拆层合成，按 alpha >128 的角色区域计算：轮廓 IoU 从约 94.42% 提高到 99.46%，重叠区域 RGB 平均绝对差从 13.60 降到 0.19（0–255）。该值不包括原图外围的低 alpha 晕光，不代表动态网格或 WebGL 渲染逐像素一致。
 
-前／后发同时相对脸部下移32个原画像素，网页300px高模型约对应6px，缩小眉眼上方露出的额头。新的注册位置：后发117,36，刘海178,37；脸、眼睛及身体不动。同步移动避免头顶前后发出现双层轮廓。原合成图保存在 `archive/composite-before-fringe-lowering.png`，运行包重新由PSD2Live导出并保留六组表情。此轮导出峰值345000KiB（约337MiB）。
+这是基于自动绑定和补绘的轻量模型，保留小幅转头和现有软关节；眼睛仍是整片眼图，未新增专业手工虹膜/睫毛拓扑。大角度转头、发片极端形变以及 Safari/真实移动设备仍需专门验收。移动端和减少动态效果偏好下保持关闭。
 
-## 独立透明发片与表情修订（2026-10-05）
+## 本轮验收
 
-- `back-hair-v3.raw.png` 是完整连续后发底图，脸和脖子后方也有绘制内容；`front-hair-v3.raw.png` 是独立刘海，间隙为透明而非皮肤残片；`face-v3.raw.png` 是完整脸部底图。三者由 imagegen 根据哑光原画生成，原始输出保留，提示词见 `PROMPTS.md`。
-- `build-layers.sh` 按固定坐标注册真实透明发片，不再用多边形模拟刘海／长发轮廓。PSD 必须以 **8 位 RGB** 导出；16 位图层会导致 PSD2Live 读取错误，已在浏览器预览复现并修正。刘海处于最上层，后发位于脸、脖子和衣服之后。
-- 使用官方 PSD2Live 1.4.2 发布包重新导出，2048贴图、8个网格、18个参数、前／后发物理；本次最终导出峰值270808KiB（约264MiB），Java堆上限1536MB。
-- `finalize-model.mjs` 生成六份标准 Cubism 表情：neutral、smile、wink、curious、sleepy、carried。悬停或键盘聚焦时每3.5秒切换四组表情，离开恢复；拖动使用 carried，释放回正。销毁和页面隐藏会清理表情计时器。
-- 拖动以右侧后领口62%／44%为枢轴，持续约28°斜吊，随移动有有限摆动；松手阻尼回正。它是参考吊饰姿态的交互反馈，不是完整布料抓取模拟。
+- 最终版本 `reference-278fdeef1009`：ESLint、Stylelint、TypeScript、Shell 语法检查通过；Vitest 17 个文件 / 67 项全部通过。
+- 原始图保持不变，三份补绘、可编辑 PSD 与合成图摘要已记录。全部运行包源文件和 `public/` 文件逐一校验一致；入口、MOC3、图集均带当前摘要版本。
+- 最终浏览器批次 `test-results/reference-restyle-accepted/`：13 项通过，11 项因设备条件跳过，耗时约 1.9 分钟。覆盖真实 MOC 网格、头颈与头发独立性、表情菜单、拖拽回弹、视频切换、随机动作、PJAX 生命周期、关闭重建和移动端默认不加载。
+- 浏览器夹具关闭背景粒子、打字机和轮播自动播放，仅做看板娘专项验收。完成双主题、移动端关闭状态、静止合成和实际 WebGL 画面的视觉核对；没有新增全站低内存性能或 Safari 验收结论。
+- 完整 clean → Vite → Hexo 通过，生成 119 个文件。本地首页与 `/posts/speedtest-architecture/` 均 HTTP 200，预览保持仅监听 `127.0.0.1:4014`。
+- 导出前检查覆盖灰度蒙版、脸部采样点与嘴周整块区域的不透明性，防止色带和细圈回归。
 
-限制：仍为轻量自动绑定，眼图没有独立虹膜／睫毛，眨眼会压缩整片眼图；大幅转头、口腔、手臂和衣服没有专业手工拓扑。发片边缘和后方覆盖改善不等于完整角度模型。正式视觉及交互验收见 `artifacts/qa/2026-10-05/live2d-v3/RESULTS.md`。
-
-## 哑光与独立发尾修订（2026-10-05）
-
-上一版的问题来自分层，而不是 PSD2Live 没有被使用：横切线把发尾混入衣服，脸部椭圆又包含了领口。当前按 PSD2Live v1.4.2 的 `PSD_LAYER_SPEC.md` 和 `RigBuilder.kt` 重新组织 8 层：身体、脖子、前发、连续后发、脸、两眼、闭口。前发覆盖后发根部；身体补绘被头发挡住的衣袖，脖子补至下巴后方。
-
-- 新原画：`matte-transparent.png`；补绘：`matte-face-backpaint.png`、`matte-body-backpaint.png`。原版文件仍保留，不用于新导出。
-- 新导出参数：`--atlas 2048 --head-strength 0.045 --body-strength 0.025 --no-cmo3`。两组头发物理均启用；转头和身体幅度降低，避免自动绑定的大幅变形。
-- 工具仍为官方 PSD2Live 1.4.2 发布包，Java 堆1536MB；最终连续发片导出峰值297912KiB（约291MiB）。不编译项目源码。
-- 拖拽通过公开 `setParams` 驱动头部反向倾斜，Canvas 以领口为旋转中心做有限阻尼回摆；不是完整骨骼衣领抓取模拟。隐藏页面／销毁会取消回摆并释放事件。
-- 移动光不烘焙进 PNG：`live2d-light.ts` 的版本限定适配器启用发片 ScreenColor，Vite 局部着色器补丁根据纹理坐标计算柔和光带，由真实 ArtMesh 透明度和 Cubism 遮罩裁切。兼容路径不可用时退回普通材质；升级 widget 必须复核。
-- 页面使用静态蓝紫环境光渐变，模型使用对应的低饱和度调色和柔和投影；没有逐像素网页光线追踪或实时背景取色。
-
-仍不是专业 Cubism 手工网格模型：眼睛目前为整片眼图，缺少单独虹膜与睫毛；转头和发片遮挡边缘仍需人工细化。应保持小幅运动，不宣称完整角度或高精度布料物理。
-
-生成素材使用 imagegen：第一张要求保持1024×1536注册位置、改为哑光赛璐璐、移除头发硬高光；第二张保持注册位置并去除眼眉口鼻补绘面部；第三张去除头部与头发、补绘被挡衣袖并保留身体原位置。透明分层脚本通过不透明角色分割排除外围晕光。原始工具输出保留在 Codex generated_images；工作副本位于本目录。
-
-## 上一版记录（历史）
-
-2026-10-05：默认猫咪已替换，浏览器真实加载、直接拖动及位置保存通过。
-
-- 原画：`base-transparent.png`；眼口遮挡底图：`face-backpaint.png`。
-- 分层：`build-layers.sh` 保留源透明度、裁剪透明边并保留图层坐标；六层 PSD 是可编辑输入。
-- 导出：PSD2Live 1.4.2，`--atlas 2048 --head-strength 0.08 --body-strength 0.04 --no-cmo3`，Java 堆上限1536MB；本次峰值 RSS 250552KiB，约245MiB。
-- 发布包 SHA256：`a5d5bcc243008e36134af7f2a945d8783eb29f3b088b03d736e8fc11b743271f`。
-- 输出：`source/media/live2d/takina-chibi/`；旧4096贴图移到 `archive/`，不再发布。
-- 打包 Core 对官方控制模型也报间接调用错误；现加载固定版本原始 Core，再导入 widget。来源和校验值见 `source/vendor/cubism/SOURCE.txt`。
-
-模型配置包含自动眨眼、轻微呼吸／头部运动和头发物理；眼口后方已补底图。它仍是几何分层的轻量自动绑定，不是专业级逐部位原画或大幅转头模型；刻意限制运动幅度以避免接缝，后续可在 Cubism Editor 中继续细化。
-
-内存策略：不运行默认8GB源码构建，重任务串行执行，浏览器测试单worker。堆上限不等于进程总内存上限。
+The Live2D model has been rebuilt around the supplied standard artwork, restoring its glossy hair, fringe silhouette and original visible colours. Built-in image_gen provides hidden-area plates and an organic matte; the runtime remains a real Cubism model with the existing expressions and interactions. Original references and the previous model are preserved.

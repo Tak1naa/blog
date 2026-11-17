@@ -11,9 +11,9 @@ describe("Meting playlist normalization", () => {
       playlist: {
         tracks: [{
           id: 42,
-          name: "测试曲目",
-          ar: [{ name: "歌手甲" }, { name: "歌手乙" }],
-          al: { name: "测试专辑", picUrl: "https://example.com/cover.jpg", pic: 99 },
+          name: "Test Track",
+          ar: [{ name: "Artist A" }, { name: "Artist B" }],
+          al: { name: "Test Album", picUrl: "https://example.com/cover.jpg", pic: 99 },
         }],
       },
     });
@@ -21,9 +21,9 @@ describe("Meting playlist normalization", () => {
     expect(tracks).toEqual([expect.objectContaining({
       id: "netease-42",
       neteaseId: "42",
-      title: "测试曲目",
-      artists: ["歌手甲", "歌手乙"],
-      album: "测试专辑",
+      title: "Test Track",
+      artists: ["Artist A", "Artist B"],
+      album: "Test Album",
       cover: "https://example.com/cover.jpg",
       pictureId: "99",
     })]);

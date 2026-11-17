@@ -1,8 +1,7 @@
 version: 1
 site:
   homePath: /
-  title: Takina Ying
-  # 副标题由 anime_quotes.yml 构建；每条必须有作品、角色和出处。
+  title: Takina
 
 background:
   defaultMode: wallpaper
@@ -11,9 +10,9 @@ background:
   overlayOpacity: 0.38
   wallpapers:
     - src: /media/takina/aquarium.jpg
-      alt: 井之上泷奈与千束在蓝紫色水族馆中仰望鱼群，官方第 4 集画面
+      alt: Aquarium scene with blue and purple ambient lighting
     - src: /media/takina/night-action.jpg
-      alt: 井之上泷奈的深色行动特写，官方第 1 集画面
+      alt: Night action illustration in deep cool tones
   video:
     enabled: true
     sources:
@@ -32,21 +31,25 @@ music:
       source: local
       title: Dog Days
       artists:
-        - 作者未标注
+        - Manaka BGM
       url: /media/music/dog-days.mp3
       cover: /media/takina/avatar.png
 
 live2d:
   enabled: true
   defaultEnabled: false
+  videos:
+    stretch: /media/companion/stretch-v1.webm
+    think: /media/companion/think-v1.webm
+    look: /media/companion/look-v1.webm
   modelPaths:
-    - /media/live2d/takina-chibi/takina-chibi.model3.json?v=face-alpha-20261006
+    - /media/live2d/takina-chibi/takina-chibi.model3.json?v=reference-278fdeef1009
   welcomeMessages:
-    - 欢迎来到 Takina Ying！
-    - 今天也要保持好奇呀。
+    - Welcome to Takina Studio!
+    - Stay curious every day.
   idleMessages:
-    - 休息一下，看看远处吧。
-    - 发现喜欢的文章了吗？
+    - Take a pause and look far ahead.
+    - Discovering anything inspiring today?
 
 effects:
   enabled: true
@@ -58,4 +61,4 @@ mobile:
   breakpoint: 768
   live2d: false
   video: false
-  carousel: false
+  carousel: true

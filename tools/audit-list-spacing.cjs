@@ -44,7 +44,7 @@ walk('public');
           return { boxes: Object.fromEntries(selectors.map(selector => [selector, box(selector)])), overflow: document.documentElement.scrollWidth > innerWidth };
         });
         results.push({ route, width, theme, ...data });
-        if (path.basename(output) === 'after.json' && [1440, 613, 393].includes(width) && ['/archives/', '/categories/随笔/', '/tags/配置/'].includes(route)) {
+        if (path.basename(output) === 'after.json' && [1440, 613, 393].includes(width) && ['/archives/', '/categories/Engineering/', '/tags/Engineering/'].includes(route)) {
           const name = route.replaceAll('/', '-');
           await page.screenshot({ path: path.join(path.dirname(output), `${name}-${width}-${theme}.png`), fullPage: true });
         }

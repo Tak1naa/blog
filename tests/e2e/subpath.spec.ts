@@ -29,8 +29,8 @@ test("subpath assets, desktop Live2D and persistent PJAX navigation", async ({ p
   await page.locator('#footer a[href="/blog/archives/"]').click();
   await page.locator('.archive-page-item[href="/blog/posts/tak1na-speedtest/"]').click();
   await expect(page.locator("#post")).toBeVisible();
-  await expect(page.locator("#post")).toContainText("鉴于南航搭建了自己的测速节点");
-  await expect(page.locator('#post a[href="https://tak1na.top/speedtest/"]').first()).toHaveText("开始测速");
+  await expect(page.locator("#post")).toContainText("ItemNetworkingItem");
+  await expect(page.locator('#post a[href="https://nova.example.com/speedtest/"]').first()).toHaveText("StartNetworking");
   expect(escapes).toEqual([]);
   expect(errors).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("article.png"), fullPage: true });
@@ -38,11 +38,11 @@ test("subpath assets, desktop Live2D and persistent PJAX navigation", async ({ p
 
 test("published content replaces both demo posts in all indexes", async ({ request, baseURL }) => {
   const root = new URL(baseURL!);
-  for (const path of ["", "archives/", "categories/自建服务/", "tags/测速/", "search.xml"]) {
+  for (const path of ["", "archives/", "categories/Infrastructure/", "tags/Networking/", "search.xml"]) {
     const response = await request.get(new URL(path, root).href);
     expect(response.status()).toBe(200);
     const text = await response.text();
-    expect(text).toContain("Tak1na 自建测速");
+    expect(text).toContain("Tak1na ItemNetworking");
     expect(text).not.toMatch(/posts\/(?:hello-solitude|dynamic-experience-guide)\//);
   }
   for (const slug of ["hello-solitude", "dynamic-experience-guide"]) {

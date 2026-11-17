@@ -34,3 +34,6 @@ playwright-report/
 # Superseded model exports; retain the current editable PSD and artwork.
 /artwork/live2d/takina-chibi/archive/
 /artwork/live2d/takina-chibi/smoke.psd
+
+# Hexo writes the merged runtime config during multi-config builds.
+/_multiconfig.yml

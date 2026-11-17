@@ -1,0 +1,107 @@
+{
+  "browser": "158.0.8127.18",
+  "passed": true,
+  "results": [
+    {
+      "action": "stretch",
+      "targetTime": 0,
+      "actualTime": 0,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 132611,
+      "transparentPixels": 294506
+    },
+    {
+      "action": "stretch",
+      "targetTime": 3.5,
+      "actualTime": 3.5,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 138308,
+      "transparentPixels": 279598
+    },
+    {
+      "action": "stretch",
+      "targetTime": 7.9,
+      "actualTime": 7.9,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 131192,
+      "transparentPixels": 290317
+    },
+    {
+      "action": "look",
+      "targetTime": 0,
+      "actualTime": 0,
+      "width": 624,
+      "height": 696,
+      "duration": 5.334,
+      "cornerAlpha": 0,
+      "opaquePixels": 131869,
+      "transparentPixels": 293309
+    },
+    {
+      "action": "look",
+      "targetTime": 2.667,
+      "actualTime": 2.667,
+      "width": 624,
+      "height": 696,
+      "duration": 5.334,
+      "cornerAlpha": 0,
+      "opaquePixels": 125345,
+      "transparentPixels": 297877
+    },
+    {
+      "action": "look",
+      "targetTime": 5.234,
+      "actualTime": 5.234,
+      "width": 624,
+      "height": 696,
+      "duration": 5.334,
+      "cornerAlpha": 0,
+      "opaquePixels": 129986,
+      "transparentPixels": 291621
+    },
+    {
+      "action": "think",
+      "targetTime": 0,
+      "actualTime": 0,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 129290,
+      "transparentPixels": 296341
+    },
+    {
+      "action": "think",
+      "targetTime": 3.5,
+      "actualTime": 3.5,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 122022,
+      "transparentPixels": 299714
+    },
+    {
+      "action": "think",
+      "targetTime": 7.9,
+      "actualTime": 7.9,
+      "width": 624,
+      "height": 696,
+      "duration": 8,
+      "cornerAlpha": 0,
+      "opaquePixels": 127394,
+      "transparentPixels": 294044
+    }
+  ],
+  "errors": [],
+  "scope": "Three video clips: Chromium playback, seeking and decoded alpha; Safari and blog integration not tested"
+}

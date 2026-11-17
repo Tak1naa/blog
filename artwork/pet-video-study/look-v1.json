@@ -1,0 +1,17 @@
+{
+  "source_sha256": "d70aaba9cc8347519ba2d82ec6ce5e029889d052e3eb1c67218cda0bb24a1d78",
+  "duration_seconds": 5.333333,
+  "fps": 24,
+  "dimensions": [
+    624,
+    696
+  ],
+  "audio": false,
+  "filter": "chromakey=0x13C620:0.14:0.06,format=gbrap,geq=r='r(X,Y)':g='if(gt(g(X,Y),1.35*max(r(X,Y),b(X,Y))),min(g(X,Y),max(r(X,Y),b(X,Y))),g(X,Y))':b='b(X,Y)':a='alpha(X,Y)',scale=1272:716,pad=1280:720:4:4:color=0x00000000,crop=624:696:328:8,format=yuva420p",
+  "bytes": 667515,
+  "generator_model": "user-provided; not specified",
+  "loop_seamless": false,
+  "notes": "Trimmed before unsolicited leaf decorations",
+  "status": "integrated into companion v1; Chromium alpha validated; Safari unverified",
+  "published_path": "/media/companion/look-v1.webm"
+}

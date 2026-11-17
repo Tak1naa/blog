@@ -1,4 +1,5 @@
 import { Howl, Howler } from "howler";
+import { onLocaleChange, t, translateDom } from "./i18n";
 import { lyricAt, parseLrc, type LyricLine } from "./lrc";
 import { loadMusicState, saveMusicState, type MusicState } from "./storage";
 import type { ExperienceConfig, PlaybackOrder, Track } from "./types";
@@ -6,6 +7,13 @@ import type { ExperienceConfig, PlaybackOrder, Track } from "./types";
 interface PlaylistResponse {
   tracks: Track[];
   stale?: boolean;
+}
+
+export interface MusicSnapshot {
+  title: string;
+  artists: string;
+  playing: boolean;
+  open: boolean;
 }
 
 export class MusicPlayer {
@@ -17,31 +25,38 @@ export class MusicPlayer {
   private lyrics: LyricLine[] = [];
   private frame?: number;
   private expanded = false;
+  private docked = false;
+  private open = false;
+  private readonly listeners = new Set<(snapshot: MusicSnapshot) => void>();
   private readonly onResize = () => this.alignToSidebar();
+  private readonly unsubscribeLocale: () => void;
 
   constructor(private readonly config: ExperienceConfig["music"]) {
     this.state = loadMusicState(config.initialVolume, config.order);
     Howler.volume(this.state.volume);
     this.root.id = "ff-music-player";
     this.root.className = "ff-music-player";
-    this.root.setAttribute("aria-label", "音乐播放器");
+    this.root.dataset.i18nAttr = "aria-label:music.title";
+    // Elements marked data-i18n hold placeholder copy until a track replaces it.
     this.root.innerHTML = `
-      <button class="ff-music-cover" type="button" data-action="expand" aria-label="展开播放列表">
-        <img alt="当前歌曲封面" src="/media/takina/avatar.png">
+      <button class="ff-music-cover" type="button" data-action="expand" data-i18n-attr="aria-label:music.togglePlaylist">
+        <img data-i18n-attr="alt:music.coverAlt" src="/media/takina/avatar.png">
       </button>
       <div class="ff-music-main">
-        <div class="ff-music-meta"><strong>音乐播放器</strong><span>点击播放</span></div>
-        <div class="ff-music-lyric" aria-live="polite">准备就绪</div>
-        <input class="ff-music-progress" type="range" min="0" max="1000" value="0" aria-label="播放进度">
+        <div class="ff-music-meta"><strong data-i18n="music.title"></strong><span data-i18n="music.hint"></span></div>
+        <div class="ff-music-lyric" aria-live="polite" data-i18n="music.ready"></div>
+        <input class="ff-music-progress" type="range" min="0" max="1000" value="0" data-i18n-attr="aria-label:music.progress">
         <div class="ff-music-controls">
-          <button type="button" data-action="previous" aria-label="上一首">⏮</button>
-          <button type="button" data-action="toggle" aria-label="播放">▶</button>
-          <button type="button" data-action="next" aria-label="下一首">⏭</button>
-          <button type="button" data-action="order" aria-label="切换播放模式">↻</button>
-          <input class="ff-music-volume" type="range" min="0" max="100" aria-label="音量">
+          <button type="button" data-action="previous" data-i18n-attr="aria-label:music.previous">⏮</button>
+          <button type="button" data-action="toggle">▶</button>
+          <button type="button" data-action="next" data-i18n-attr="aria-label:music.next">⏭</button>
+          <button type="button" data-action="order" data-i18n-attr="aria-label:music.order.toggle">↻</button>
+          <input class="ff-music-volume" type="range" min="0" max="100" data-i18n-attr="aria-label:music.volume">
         </div>
       </div>
-      <div class="ff-music-list" aria-label="播放列表"></div>`;
+      <div class="ff-music-list" data-i18n-attr="aria-label:music.playlist"></div>`;
+    this.renderLocale();
+    this.unsubscribeLocale = onLocaleChange(() => this.renderLocale());
     document.body.append(this.root);
     this.alignToSidebar();
     window.addEventListener("resize", this.onResize);
@@ -51,13 +66,40 @@ export class MusicPlayer {
 
   destroy(): void {
     window.removeEventListener("resize", this.onResize);
+    this.unsubscribeLocale();
     if (this.frame !== undefined) cancelAnimationFrame(this.frame);
     this.sound?.unload();
+    this.listeners.clear();
     this.root.remove();
   }
 
+  /** Listeners receive the current snapshot immediately, then every change. */
+  subscribe(listener: (snapshot: MusicSnapshot) => void): () => void {
+    this.listeners.add(listener);
+    listener(this.snapshot());
+    return () => this.listeners.delete(listener);
+  }
+
+  /** A docked player is a popover of the dock, hidden until opened. */
+  setDocked(docked: boolean): void {
+    this.docked = docked;
+    this.root.classList.toggle("is-docked", docked);
+    if (!docked) this.setOpen(false);
+    this.alignToSidebar();
+  }
+
+  setOpen(open: boolean): void {
+    this.open = open && this.docked;
+    this.root.classList.toggle("is-open", this.open);
+    this.emit();
+  }
+
+  isOpen(): boolean {
+    return this.open;
+  }
+
   alignToSidebar(): void {
-    const card = window.innerWidth > 1200
+    const card = !this.docked && window.innerWidth > 1200
       ? document.querySelector<HTMLElement>("#aside-content .card-widget")
       : null;
     const rect = card?.getBoundingClientRect();
@@ -120,7 +162,7 @@ export class MusicPlayer {
     this.installMediaSession();
   }
 
-  private toggle(): void {
+  toggle(): void {
     if (!this.tracks.length) return;
     if (!this.sound) {
       void this.loadCurrent(true);
@@ -173,16 +215,18 @@ export class MusicPlayer {
 
   private onPlay(): void {
     this.root.classList.add("is-playing");
-    this.setButton("⏸", "暂停");
+    this.renderToggle(true);
     if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "playing";
+    this.emit();
     this.tick();
   }
 
   private onPause(): void {
     this.root.classList.remove("is-playing");
-    this.setButton("▶", "播放");
+    this.renderToggle(false);
     if ("mediaSession" in navigator) navigator.mediaSession.playbackState = "paused";
     this.persist();
+    this.emit();
   }
 
   private tick = (): void => {
@@ -190,9 +234,7 @@ export class MusicPlayer {
     const duration = this.sound?.duration() ?? 0;
     const progress = this.root.querySelector<HTMLInputElement>(".ff-music-progress");
     if (progress && duration > 0) progress.value = String(Math.round((seek / duration) * 1000));
-    const lineIndex = lyricAt(this.lyrics, seek);
-    const lyric = this.root.querySelector<HTMLElement>(".ff-music-lyric");
-    if (lyric) lyric.textContent = this.lyrics[lineIndex]?.text ?? (this.lyrics.length ? "♪" : "暂无歌词");
+    this.renderLyric(seek);
     if (this.sound?.playing()) this.frame = requestAnimationFrame(this.tick);
   };
 
@@ -225,22 +267,28 @@ export class MusicPlayer {
     const orders: PlaybackOrder[] = ["list", "loop", "single", "random"];
     const current = orders.indexOf(this.state.order);
     this.state.order = orders[(current + 1) % orders.length] ?? "loop";
-    const button = this.root.querySelector<HTMLElement>("[data-action=order]");
-    if (button) button.title = `播放模式：${this.state.order}`;
+    this.renderOrder();
     this.persist();
   }
 
   private renderTrack(): void {
     const track = this.tracks[this.currentIndex];
     if (!track) return;
-    const title = this.root.querySelector(".ff-music-meta strong");
-    const artist = this.root.querySelector(".ff-music-meta span");
+    const title = this.root.querySelector<HTMLElement>(".ff-music-meta strong");
+    const artist = this.root.querySelector<HTMLElement>(".ff-music-meta span");
     const cover = this.root.querySelector<HTMLImageElement>(".ff-music-cover img");
-    if (title) title.textContent = track.title;
-    if (artist) artist.textContent = track.artists.join(" / ");
+    if (title) {
+      delete title.dataset.i18n;
+      title.textContent = track.title;
+    }
+    if (artist) {
+      delete artist.dataset.i18n;
+      artist.textContent = track.artists.join(" / ");
+    }
     if (cover) cover.src = track.cover ?? "/media/takina/avatar.png";
     this.state.trackId = track.id;
     this.persist();
+    this.emit();
   }
 
   private renderList(): void {
@@ -262,11 +310,48 @@ export class MusicPlayer {
     this.root.classList.toggle("is-expanded", expanded);
   }
 
-  private setButton(text: string, label: string): void {
+  private renderLocale(): void {
+    translateDom(this.root);
+    this.renderToggle();
+    this.renderOrder();
+    if (this.sound) this.renderLyric(Number(this.sound.seek() ?? 0));
+    this.emit();
+  }
+
+  private renderToggle(playing = this.sound?.playing() ?? false): void {
     const button = this.root.querySelector<HTMLButtonElement>("[data-action=toggle]");
     if (!button) return;
-    button.textContent = text;
-    button.setAttribute("aria-label", label);
+    button.textContent = playing ? "⏸" : "▶";
+    button.setAttribute("aria-label", t(playing ? "media.pause" : "media.play"));
+  }
+
+  private renderOrder(): void {
+    const button = this.root.querySelector<HTMLElement>("[data-action=order]");
+    const mode = t(`music.order.${this.state.order}` as const);
+    if (button) button.title = t("music.order.current", { mode });
+  }
+
+  private renderLyric(seek: number): void {
+    const lyric = this.root.querySelector<HTMLElement>(".ff-music-lyric");
+    if (!lyric) return;
+    delete lyric.dataset.i18n;
+    const line = this.lyrics[lyricAt(this.lyrics, seek)]?.text;
+    lyric.textContent = line ?? (this.lyrics.length ? "♪" : t("music.instrumental"));
+  }
+
+  private snapshot(): MusicSnapshot {
+    const track = this.tracks[this.currentIndex];
+    return {
+      title: track?.title ?? t("music.title"),
+      artists: track?.artists.join(" / ") ?? "",
+      playing: this.sound?.playing() ?? false,
+      open: this.open,
+    };
+  }
+
+  private emit(): void {
+    const snapshot = this.snapshot();
+    this.listeners.forEach((listener) => listener(snapshot));
   }
 
   private persist(): void {

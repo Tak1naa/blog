@@ -8,7 +8,7 @@
   "cmo3FileFormatVersion": "500000005",
   "canvas": {"width":1024,"height":1536},
   "config": {"atlasSize":2048,"meshSpacing":64,"headTurnStrength":0.045,"bodyStrength":0.025,"meshOnly":false,"generateDeformers":true,"exportMotions":true},
-  "faceRig": {"algorithm":"perspective-parallelogram-nine-pose-v2","angleX":[-45,0,45],"angleY":[-30,0,30],"initialAngleZ":0.0,"centerX":506.58002,"centerY":498.69598,"radiusX":240.85999,"radiusY":244.29599},
+  "faceRig": {"algorithm":"perspective-parallelogram-nine-pose-v2","angleX":[-45,0,45],"angleY":[-30,0,30],"initialAngleZ":0.0,"centerX":506.58002,"centerY":500.7328,"radiusX":326.06,"radiusY":251.81279},
   "deformerHierarchy": {"head":"DeformHeadContainer","face":"DeformFaceNinePose","frontHair":["DeformHairFrontFollow","DeformHairFrontPhysics"],"backHair":["DeformHairBackFollow","DeformHairBackPhysics"]},
   "physics": {"enabled":true,"frontHair":true,"backHair":true,"eyeJelly":false,"groups":["PhysicsHairBack","PhysicsHairFront"]},
   "summary": {"layers":11,"drawables":11,"deformers":14,"parameters":18,"atlasPages":1},

@@ -1,0 +1,12 @@
+{
+  "previous": {
+    "opaque_rgb_mae_0_255": 13.599090675759909,
+    "opaque_silhouette_iou": 0.9442214523773526
+  },
+  "reference_restyle": {
+    "opaque_rgb_mae_0_255": 0.19280051529962935,
+    "opaque_silhouette_iou": 0.9946171485119016
+  },
+  "note": "Source-layer composite at neutral pose; excludes alpha<129 glow. Not a WebGL or dynamic pose metric.",
+  "reference_sha256": "afff1c0da36b94209334bbcad077451dc2c77823e3e9d6938d07a6529e84a5a1"
+}

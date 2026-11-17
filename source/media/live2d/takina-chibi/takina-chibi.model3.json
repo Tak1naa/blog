@@ -1,9 +1,9 @@
 {
   "Version": 3,
   "FileReferences": {
-    "Moc": "takina-chibi.moc3?v=899382a0cd4d",
+    "Moc": "takina-chibi.moc3?v=c21b5d567996",
     "Textures": [
-      "takina-chibi.2048/texture_00.png?v=fd848868ecc1"
+      "takina-chibi.2048/texture_00.png?v=b1186517aed1"
     ],
     "Physics": "takina-chibi.physics3.json",
     "DisplayInfo": "takina-chibi.cdi3.json",

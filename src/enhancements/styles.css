@@ -1,3 +1,14 @@
+/* Cascade order for the Nocturne system. Layered rules always lose to
+   unlayered ones, so the theme overrides below stay unlayered (with their
+   !important) until the Solitude theme CSS itself is brought into a layer. */
+@layer tokens, reset, components, overrides;
+
+@import url("./tokens.css");
+@import url("./stage.css");
+@import url("./dock.css") layer(components);
+@import url("./bento.css");
+@import url("./companion.css");
+
 :root {
   --ff-radius: 10px;
   --ff-list-gap: 24px;
@@ -35,61 +46,6 @@
   --ff-category-active: rgb(161 166 255 / 36%);
   --ff-category-active-text: var(--ff-text);
   --ff-shadow: 0 8px 28px rgb(7 15 38 / 30%);
-}
-
-#ff-media-background {
-  position: fixed;
-  z-index: -3;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background: linear-gradient(145deg, #324663, #968cd2);
-}
-
-.ff-wallpaper-viewport,
-.ff-wallpaper-container,
-.ff-wallpaper-slide,
-.ff-wallpaper-slide img,
-.ff-background-video,
-.ff-background-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  inset: 0;
-}
-
-.ff-wallpaper-container {
-  display: flex;
-}
-
-.ff-wallpaper-slide {
-  flex: 0 0 100%;
-  min-width: 0;
-}
-
-.ff-wallpaper-slide img,
-.ff-background-video {
-  object-fit: cover;
-}
-
-.ff-wallpaper-slide.is-failed {
-  background: linear-gradient(145deg, #31445f, #7b6db2);
-}
-
-.ff-wallpaper-slide.is-failed img {
-  display: none;
-}
-
-.ff-background-video {
-  z-index: 2;
-}
-
-.ff-background-overlay {
-  z-index: 3;
-  background:
-    linear-gradient(to bottom, rgb(8 15 35 / 8%), rgb(8 15 35 / calc(var(--ff-overlay) * 100%))),
-    rgb(8 15 35 / calc(var(--ff-overlay) * 45%));
-  backdrop-filter: blur(1px);
 }
 
 #body-wrap,
@@ -358,6 +314,19 @@ figure.highlight .number {
 #page-header #nav a:hover,
 #page-header #nav a:focus-visible {
   color: var(--ff-accent) !important;
+}
+
+/* Dropdown items get a lavender pill on hover, so the accent ink above would
+   vanish into it. Dark night ink stays legible on lavender in both themes. */
+#page-header #nav .menus_items .menus_item .menus_item_child li a:hover,
+#page-header #nav .menus_items .menus_item .menus_item_child li a:focus-visible {
+  background: var(--takina-lavender) !important;
+  color: var(--takina-night) !important;
+}
+
+#page-header #nav .menus_items .menus_item .menus_item_child li a:hover i,
+#page-header #nav .menus_items .menus_item .menus_item_child li a:focus-visible i {
+  color: var(--takina-night) !important;
 }
 
 #page-header.nav-fixed.nav-visible #nav #menus > .menus_items {
@@ -907,6 +876,34 @@ figure.highlight .number {
   transition: transform 250ms ease;
 }
 
+/* Docked: the full player becomes the dock's popover, centred above the
+   capsule and shown only while open. Unlayered to beat the legacy rules above. */
+.ff-music-player.is-docked {
+  bottom: calc(var(--ff-dock-gap) + var(--ff-dock-height) + 12px);
+  left: 50%;
+  width: min(338px, calc(100vw - 24px));
+  translate: -50% 0;
+}
+
+.ff-music-player.is-docked:not(.is-open) { display: none; }
+
+/* Keep footer links reachable when the dock reappears at the page end. */
+#footer { padding-bottom: calc(var(--ff-dock-height) + var(--ff-dock-gap) + 12px) !important; }
+
+.ff-visit-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  padding: 14px 20px;
+  color: var(--ff-text);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.ff-visit-stat { display: inline-flex; align-items: baseline; gap: 6px; }
+.ff-visit-value { min-inline-size: 2ch; font-weight: 600; font-variant-numeric: tabular-nums; }
+
 .ff-music-cover {
   width: 64px;
   height: 64px;
@@ -1044,7 +1041,9 @@ figure.highlight .number {
   position: absolute;
   right: 0;
   bottom: 54px;
-  width: 230px;
+  width: max-content;
+  min-width: 260px;
+  max-width: min(320px, calc(100vw - 24px));
   padding: 16px;
   border: 1px solid var(--ff-glass-border);
   border-radius: var(--ff-radius);
@@ -1065,8 +1064,10 @@ figure.highlight .number {
 }
 
 .ff-settings-panel label > span {
-  flex: 0 0 auto;
-  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .ff-settings-panel input[type="range"] {
@@ -1107,7 +1108,7 @@ figure.highlight .number {
   cursor: grab;
   touch-action: none;
   transform-origin: 62% 44%;
-  filter: saturate(0.84) brightness(0.94) drop-shadow(0 3px 5px rgb(12 16 38 / 22%));
+  filter: drop-shadow(0 3px 5px rgb(12 16 38 / 22%));
 }
 
 .ff-live2d-shell.is-carried canvas,
@@ -1115,18 +1116,8 @@ figure.highlight .number {
   will-change: transform;
 }
 
-/* The same cool, top-left ambient light reaches the page and the mascot.
-   No animated full-screen filters, pointer tracking or additional texture loads. */
-.ff-background-overlay::after {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  background: linear-gradient(125deg, rgb(116 137 213 / 11%), transparent 48%, rgb(56 49 105 / 9%));
-}
-
 [data-theme="light"] .ff-live2d-shell canvas {
-  filter: saturate(0.88) brightness(1.02) drop-shadow(0 3px 5px rgb(41 53 90 / 15%));
+  filter: drop-shadow(0 3px 5px rgb(41 53 90 / 15%));
 }
 
 .ff-live2d-shell canvas:active {
@@ -1180,7 +1171,7 @@ figure.highlight .number {
 
 .ff-live2d-shell canvas:focus-visible,
 .ff-music-player button:focus-visible,
-.ff-settings :is(button, input):focus-visible {
+.ff-settings :is(button, input, select):focus-visible {
   outline: 2px solid var(--ff-accent);
   outline-offset: 3px;
 }
@@ -1250,12 +1241,19 @@ figure.highlight .number {
   .ff-music-controls { position: absolute; right: 12px; bottom: 10px; }
   .ff-music-meta { padding-right: 0; }
   .ff-music-player.is-expanded { width: calc(100vw - 20px); }
-  .ff-music-player:not(.is-expanded, :hover, :focus-within) {
+
+  /* Over the left-anchored dock, clear of the settings trigger on the right. */
+  .ff-music-player.is-docked {
+    left: 10px;
+    width: calc(100vw - 84px);
+    translate: none;
+  }
+  .ff-music-player:not(.is-docked, .is-expanded, :hover, :focus-within) {
     grid-template-columns: 48px;
     width: 64px;
     min-height: 64px;
   }
-  .ff-music-player:not(.is-expanded, :hover, :focus-within) .ff-music-main {
+  .ff-music-player:not(.is-docked, .is-expanded, :hover, :focus-within) .ff-music-main {
     display: none;
   }
   .ff-settings { right: 12px; bottom: calc(max(10px, env(safe-area-inset-bottom)) + 76px); }
@@ -1374,6 +1372,60 @@ figure.highlight .number {
   outline-offset: 3px;
 }
 
+/* Bento cards always sit on night glass. Solitude's unlayered element rules
+   (a, h2, ul/li, strong, blockquote, button) outrank the components layer, so
+   the properties they set are restated here. */
+.ff-bento .ff-bento-title {
+  margin: 0;
+  color: #fff;
+}
+
+.ff-bento .ff-bento-title a,
+.ff-bento .ff-bento-posts a,
+.ff-bento .ff-bento-track strong,
+.ff-bento .ff-bento-graph strong { color: #fff; }
+
+.ff-bento .ff-bento-eyebrow a,
+.ff-bento .ff-bento-link,
+.ff-bento .ff-bento-posts a:hover { color: var(--takina-aqua); }
+
+.ff-bento .ff-bento-badges,
+.ff-bento .ff-bento-focus,
+.ff-bento .ff-bento-posts li { display: flex; }
+
+.ff-bento .ff-bento-posts { display: grid; }
+
+.ff-bento .ff-bento-badges li,
+.ff-bento .ff-bento-focus li { padding: 3px 10px; }
+
+.ff-bento .ff-bento-posts li { padding: 8px 0; }
+
+.ff-bento .ff-bento-epigraph {
+  margin: 0;
+  padding: 0 0 0 12px;
+  color: rgb(255 255 255 / 72%);
+  font-size: var(--fs-sm);
+  border: 0;
+  border-inline-start: 2px solid var(--takina-lavender);
+  border-radius: 0;
+  background: none;
+}
+
+.ff-bento .ff-bento-audio-controls button {
+  padding: 0 14px;
+  color: inherit;
+  font-size: var(--fs-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-3);
+}
+
+.ff-bento .ff-bento-audio-controls button:hover:not(:disabled) {
+  color: var(--takina-aqua);
+  border-color: color-mix(in srgb, var(--takina-aqua) 55%, transparent);
+}
+
+.ff-bento .ff-bento-audio[data-state="playing"] [data-bento="play"] { color: var(--sakura); }
+
 @media (prefers-reduced-transparency: reduce) {
   :root { --ff-glass: rgb(249 251 255 / 96%); }
 
@@ -1391,4 +1443,51 @@ figure.highlight .number {
   .ff-music-player.is-playing .ff-music-cover img {
     animation: none !important;
   }
+}
+
+.ff-settings-panel select {
+  flex: 0 0 auto;
+  min-width: 112px;
+  max-width: 160px;
+  padding: 4px 8px;
+  border: 1px solid var(--ff-glass-border);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+.ff-settings-panel select option { color: initial; }
+
+.ff-settings-panel label[hidden] { display: none; }
+
+/* Post bilingual switcher bar */
+.post-lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  padding: 6px 14px;
+  border: 1px solid var(--border, rgb(255 255 255 / 9%));
+  border-radius: var(--r-md, 10px);
+  background: var(--surface-2, rgb(22 24 34 / 70%));
+  font-size: 0.9rem;
+}
+
+.post-lang-switch a {
+  padding: 2px 6px;
+  border-radius: var(--r-sm, 6px);
+  color: var(--ff-muted, #a1a1aa);
+  text-decoration: none;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+
+.post-lang-switch a:hover,
+.post-lang-switch a.is-active {
+  color: var(--takina-night, #0b0d14) !important;
+  background: var(--takina-lavender, #8b93ff);
+  font-weight: 600;
+}
+
+[data-post-lang][hidden] {
+  display: none !important;
 }

@@ -1,69 +1,65 @@
-# 人工选入的短台词；来源是社区整理，中文译法可能与具体字幕版不同。
-# 不自动同步第三方数据库；新增条目必须先核对来源与作品关联。
-- text: 真相永远只有一个！
-  ja: 真実はいつもひとつ！！
-  originalSource: https://www.conan-portal.com/
-  work: 名侦探柯南
-  character: 江户川柯南
-  source: https://zh.wikiquote.org/zh-cn/名侦探柯南
-- text: 我想打篮球！
-  ja: バスケがしたいです！
-  originalSource: https://www.toei-anim.co.jp/dvd/slamdunk/
-  work: 灌篮高手
-  character: 三井寿
-  source: https://zh.wikiquote.org/zh-cn/灌籃高手
-- text: 我要成为海贼王！
-  work: ONE PIECE
-  character: 蒙奇·D·路飞
-  source: https://zh.wikiquote.org/wiki/ONE_PIECE
-- text: 不能逃避。
-  ja: 逃げちゃダメだ
-  originalSource: https://www.evastore.jp/shop/g/gA0007809S/
-  work: 新世纪福音战士
-  character: 碇真嗣
-  source: https://en.wikiquote.org/wiki/Neon_Genesis_Evangelion#Angel_Attack_[1.1]
-- text: 一即是全，全即是一。
-  work: 钢之炼金术师
-  character: 伊兹米·卡迪斯
-  source: https://zh.wikiquote.org/wiki/鋼之鍊金術師
-- text: 已经没什么好怕的了。
-  work: 魔法少女小圆
-  character: 巴麻美
-  source: https://en.wikiquote.org/wiki/Puella_Magi_Madoka_Magica#I'm_Not_Afraid_of_Anything_Anymore
-- text: 江户川柯南，是个侦探。
-  ja: 俺は江戸川コナン、探偵さ。
-  work: 名侦探柯南
-  character: 江户川柯南
-  source: https://zh.wikiquote.org/zh-cn/名侦探柯南
-- text: 左手只是辅助。
-  ja: 左手はそえるだけ…
-  originalSource: https://www.oricon.co.jp/news/2257959/full/
-  work: 灌篮高手
-  character: 樱木花道
-  source: https://zh.wikiquote.org/zh-cn/灌籃高手
-- text: 我想要活下去！
-  ja: 生ぎたいっ!!!!
-  originalSource: https://mangaart.jp/ja/works/OP_TP_022
-  work: ONE PIECE
-  character: 妮可·罗宾
-  source: https://zh.wikiquote.org/wiki/ONE_PIECE
-- text: 陌生的天花板。
-  work: 新世纪福音战士
-  character: 碇真嗣
-  source: https://en.wikiquote.org/wiki/Neon_Genesis_Evangelion#The_Beast_[1.2]
-- text: Bang...
-  work: 星际牛仔
-  character: 斯派克·斯皮格尔
-  source: https://en.wikiquote.org/wiki/Cowboy_Bebop#The_Real_Folk_Blues_(Part_2)_[1.26]
-- text: 凶手就是你！
-  work: 名侦探柯南
-  character: 江户川柯南
-  source: https://zh.wikiquote.org/zh-cn/名侦探柯南
-- text: 我是天才！
-  work: 灌篮高手
-  character: 樱木花道
-  source: https://zh.wikiquote.org/zh-cn/灌籃高手
-- text: 狙击王，把那面旗子打下来！
-  work: ONE PIECE
-  character: 蒙奇·D·路飞
-  source: https://zh.wikiquote.org/wiki/ONE_PIECE
+- text: There is always only one truth!
+  ja: しんじつはいつもひとつ！
+  work: Detective Conan
+  character: Conan Edogawa
+  source: https://en.wikipedia.org/wiki/Case_Closed
+- text: I'm gonna be King of the Pirates!
+  ja: かいぞくおうにおれはなる！
+  work: One Piece
+  character: Monkey D. Luffy
+  source: https://en.wikipedia.org/wiki/One_Piece
+- text: Coach Anzai... I want to play basketball.
+  ja: あんざいせんせい…バスケがしたいです
+  work: Slam Dunk
+  character: Hisashi Mitsui
+  source: https://en.wikipedia.org/wiki/Slam_Dunk_(manga)
+- text: I mustn't run away.
+  ja: にげちゃだめだ
+  work: Neon Genesis Evangelion
+  character: Shinji Ikari
+  source: https://en.wikipedia.org/wiki/Neon_Genesis_Evangelion
+- text: One is all, all is one.
+  ja: いちはぜん、ぜんはいち
+  work: Fullmetal Alchemist
+  character: Izumi Curtis
+  source: https://en.wikipedia.org/wiki/Fullmetal_Alchemist
+- text: I never go back on my word. That's my ninja way!
+  ja: まっすぐじぶんのことばはまげねぇ。それがオレのにんどうだ！
+  work: Naruto
+  character: Naruto Uzumaki
+  source: https://en.wikipedia.org/wiki/Naruto
+- text: Just who the hell do you think I am?!
+  ja: オレをだれだとおもっていやがる！
+  work: Gurren Lagann
+  character: Kamina
+  source: https://en.wikipedia.org/wiki/Gurren_Lagann
+- text: Dedicate your hearts!
+  ja: しんぞうをささげよ！
+  work: Attack on Titan
+  character: Erwin Smith
+  source: https://en.wikipedia.org/wiki/Attack_on_Titan
+- text: Good grief.
+  ja: やれやれだぜ
+  work: "JoJo's Bizarre Adventure: Stardust Crusaders"
+  character: Jotaro Kujo
+  source: https://en.wikipedia.org/wiki/Stardust_Crusaders
+- text: Set your heart ablaze.
+  ja: こころをもやせ
+  work: "Demon Slayer: Kimetsu no Yaiba"
+  character: Kyojuro Rengoku
+  source: https://en.wikipedia.org/wiki/Demon_Slayer:_Kimetsu_no_Yaiba
+- text: Amuro, launching!
+  ja: アムロ、いきまーす！
+  work: Mobile Suit Gundam
+  character: Amuro Ray
+  source: https://en.wikipedia.org/wiki/Mobile_Suit_Gundam
+- text: In the name of the Moon, I'll punish you!
+  ja: つきにかわっておしおきよ！
+  work: Sailor Moon
+  character: Usagi Tsukino
+  source: https://en.wikipedia.org/wiki/Sailor_Moon
+- text: You are already dead.
+  ja: おまえはもうしんでいる
+  work: Fist of the North Star
+  character: Kenshiro
+  source: https://en.wikipedia.org/wiki/Fist_of_the_North_Star

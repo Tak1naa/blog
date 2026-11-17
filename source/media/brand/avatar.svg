@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Takina Ying 头像">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Takina Ying Avatar">
   <defs><linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6f8cff"/><stop offset="1" stop-color="#b36fdb"/></linearGradient></defs>
   <rect width="256" height="256" rx="64" fill="url(#a)"/>
   <circle cx="128" cy="117" r="67" fill="#fff" fill-opacity=".14"/>

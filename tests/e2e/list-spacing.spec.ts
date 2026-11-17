@@ -5,7 +5,7 @@ test("mobile filters have no overlapping desktop More action", async ({ page }, 
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [613, 393]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ["/archives/", "/categories/自建服务/"]) {
+    for (const route of ["/archives/", "/categories/Infrastructure/"]) {
       await page.goto(route);
       await expect(page.locator("html")).toHaveClass(/ff-enhancements-ready/);
       await expect(page.locator("#category-bar .category-bar-more-group")).toBeHidden();
@@ -46,7 +46,7 @@ test("archives categories and tags have transparent inner filter surfaces", asyn
   test.skip(testInfo.project.name !== "desktop", "serial surface-state matrix");
   test.setTimeout(120_000);
   await page.emulateMedia({ reducedMotion: "reduce" });
-  const routes = ["/archives/", "/archives/2026/", "/archives/2026/11/", "/categories/", "/categories/自建服务/", "/tags/", ...["测速", "校园网", "自建服务"].map(tag => `/tags/${tag}/`)];
+  const routes = ["/archives/", "/archives/2026/", "/archives/2026/11/", "/categories/", "/categories/Infrastructure/", "/tags/", ...["Networking", "Campus", "Infrastructure"].map(tag => `/tags/${tag}/`)];
   const selectors = ".home-category-bar, #category-bar, #category-bar-items, #tag-page-tags, #page > .category-lists, #page > .category-lists > .tag-cloud-list, .archive-page-shell";
   for (const width of [1440, 613, 393]) {
     await page.setViewportSize({ width, height: 900 });
@@ -91,7 +91,7 @@ test("archives categories and tags have transparent inner filter surfaces", asyn
           expect(style.margin).toBe("0px");
           expect(style.radius).toBe("10px");
         }
-        if (width === 613 && theme === "dark" && ["/archives/", "/categories/自建服务/", "/tags/测速/"].includes(route)) {
+        if (width === 613 && theme === "dark" && ["/archives/", "/categories/Infrastructure/", "/tags/Networking/"].includes(route)) {
           await page.screenshot({ path: testInfo.outputPath(`surface-${route.replaceAll("/", "-")}.png`) });
         }
       }
@@ -147,7 +147,7 @@ test("category and tag landing pages share responsive spacing in both themes", a
 test("listing gaps are consistent across every listing route and viewport", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "serial responsive matrix");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  const routes = ["/", "/categories/自建服务/", ...["测速", "校园网", "自建服务"].map(tag => `/tags/${tag}/`), "/archives/", "/archives/2026/", "/archives/2026/11/"];
+  const routes = ["/", "/categories/Infrastructure/", ...["Networking", "Campus", "Infrastructure"].map(tag => `/tags/${tag}/`), "/archives/", "/archives/2026/", "/archives/2026/11/"];
   for (const width of [1440, 908, 393]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of routes) {

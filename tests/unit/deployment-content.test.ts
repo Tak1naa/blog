@@ -4,13 +4,13 @@ import { parse } from "yaml";
 
 describe("production content and redirect contracts", () => {
   it("only publishes the requested article and points the homepage to it", () => {
-    expect(readdirSync("source/_posts").filter(name => name.endsWith(".md"))).toEqual(["tak1na-speedtest.md"]);
-    const post = readFileSync("source/_posts/tak1na-speedtest.md", "utf8");
+    expect(readdirSync("source/_posts").filter(name => name.endsWith(".md"))).toEqual(["speedtest-architecture.md"]);
+    const post = readFileSync("source/_posts/speedtest-architecture.md", "utf8");
     const metadata = parse(post.split("---")[1]!);
-    expect(metadata.title).toBe("Tak1na 自建测速");
-    expect(metadata.abbrlink).toBe("tak1na-speedtest");
-    expect(post).toContain("[开始测速](https://tak1na.top/speedtest/)");
-    expect(post).toContain("~~大概可能应该有空~~");
+    expect(metadata.title).toBe("High-Performance Self-Hosted Speedtest Architecture");
+    expect(metadata.abbrlink).toBe("speedtest-architecture");
+    expect(post).toContain("## Overview");
+    expect(post).toContain("## Implementation & Security Boundaries");
     const theme = parse(readFileSync("_config.solitude.yml", "utf8"));
     expect(theme.hometop.recommendList[0].url).toBe(`/posts/${metadata.abbrlink}/`);
   });

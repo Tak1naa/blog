@@ -1,0 +1,125 @@
+.ff-companion-menu,
+.ff-companion-tools,
+.ff-companion-bubble {
+  --cp-surface: #fff;
+  --cp-input: #f5f6fc;
+  --cp-border: rgb(36 51 75 / 18%);
+  --cp-on-accent: #fff;
+}
+
+[data-theme="dark"] :is(.ff-companion-menu, .ff-companion-tools, .ff-companion-bubble) {
+  --cp-surface: #161822;
+  --cp-input: #11131a;
+  --cp-border: rgb(255 255 255 / 18%);
+  --cp-on-accent: #11131a;
+}
+
+.ff-live2d-shell > .ff-companion-video {
+  position: absolute;
+
+  /* Match the 624×696 clips' visible silhouette to Live2D, including padding.
+     Keep sizing separate from the transform shared by drag and jelly motions. */
+  inset: -5% auto auto -14%;
+  inline-size: 128%;
+  block-size: 106.5%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease-out;
+}
+
+.ff-live2d-shell canvas { transition: opacity 160ms ease-out; }
+.ff-live2d-shell.is-video-playing canvas { opacity: 0; }
+.ff-live2d-shell.is-video-playing > .ff-companion-video { opacity: 1; }
+
+.ff-companion-bubble {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: 88%;
+  inset-inline-end: 10px;
+  box-sizing: border-box;
+  inline-size: max-content;
+  max-inline-size: min(230px, calc(100vw - 24px));
+  padding: 10px 14px;
+  color: var(--ff-text);
+  font-size: 13px;
+  line-height: 1.6;
+  border: 1px solid var(--cp-border);
+  border-radius: 14px;
+  background: var(--cp-surface);
+  pointer-events: none;
+}
+
+.ff-live2d-shell[data-tip-side="end"] .ff-companion-bubble {
+  inset-inline: 10px auto;
+}
+
+.ff-companion-menu,
+.ff-companion-tools {
+  position: fixed;
+  z-index: 1100;
+  box-sizing: border-box;
+  max-block-size: calc(100dvh - 24px);
+  overflow: auto;
+  color: var(--ff-text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  border: 1px solid var(--cp-border);
+  border-radius: 14px;
+  background: var(--cp-surface);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 18%);
+  overscroll-behavior: contain;
+  scrollbar-color: var(--ff-muted) var(--cp-surface);
+}
+
+.ff-companion-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; inline-size: 260px; padding: 8px; }
+.ff-companion-menu hr { grid-column: 1 / -1; inline-size: 100%; margin: 5px 0; border: 0; border-block-start: 1px solid var(--cp-border); }
+.ff-companion-menu [role="menuitemcheckbox"],
+.ff-companion-menu [data-companion-action="tools"] { grid-column: 1 / -1; }
+
+.ff-companion-menu button,
+.ff-companion-tools button {
+  min-block-size: 36px;
+  padding: 7px 10px;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ff-companion-menu button:hover,
+.ff-companion-tools button:hover { background: color-mix(in srgb, var(--ff-text) 9%, transparent); }
+.ff-companion-menu [aria-checked="true"] { color: var(--ff-accent); background: color-mix(in srgb, var(--ff-accent) 12%, transparent); font-weight: 600; }
+.ff-companion-menu [aria-checked="true"]::after { float: inline-end; content: "✓"; }
+.ff-companion-menu button:focus-visible,
+.ff-companion-tools :is(button, input, a):focus-visible { outline: 2px solid var(--ff-accent); outline-offset: 2px; }
+.ff-companion-tools { inset-inline-end: 20px; inset-block-end: 90px; inline-size: min(360px, calc(100vw - 24px)); max-block-size: calc(100dvh - 116px); padding: 20px; }
+.ff-companion-tools h2 { margin: 0 48px 18px 0; color: inherit; font-size: 17px; }
+.ff-companion-tools h3 { margin: 20px 0 10px; color: inherit; font-size: 15px; }
+.ff-companion-tools p { margin: 8px 0; }
+.ff-companion-tools .ff-companion-tools-close { position: absolute; inset-block-start: 12px; inset-inline-end: 10px; }
+.ff-companion-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.ff-companion-form label { display: grid; gap: 5px; inline-size: 100%; }
+.ff-companion-tools input:not([type="checkbox"]) { box-sizing: border-box; inline-size: 100%; min-block-size: 38px; padding: 7px 10px; color: inherit; font: inherit; border: 1px solid var(--cp-border); border-radius: 8px; background: var(--cp-input); caret-color: var(--ff-accent); }
+.ff-companion-tools input[type="checkbox"] { accent-color: var(--ff-accent); }
+.ff-companion-form button[type="submit"] { color: var(--cp-on-accent); background: var(--ff-accent); }
+.ff-companion-help { color: var(--ff-muted); font-size: 12px; }
+.ff-companion-tools a { color: var(--ff-accent); text-underline-offset: 3px; }
+.ff-companion-weather-result button { display: block; inline-size: 100%; }
+.ff-companion-tasks { display: grid; gap: 12px; margin: 14px 0; padding: 0; list-style: none; }
+.ff-companion-tasks li { display: flex; gap: 6px; align-items: center; }
+.ff-companion-task-text { display: grid; flex: 1; gap: 3px; min-inline-size: 0; overflow-wrap: anywhere; }
+.ff-companion-task-text time { color: var(--ff-muted); font-size: 11px; }
+.ff-companion-tasks .is-done .ff-companion-task-text > span { text-decoration: line-through; }
+.ff-companion-tools [hidden],
+.ff-companion-tools[hidden],
+.ff-companion-bubble[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ff-live2d-shell > .ff-companion-video,
+  .ff-live2d-shell canvas { transition: none; }
+}

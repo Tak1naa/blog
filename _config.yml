@@ -1,13 +1,13 @@
-title: "Takina Ying"
-subtitle: "井之上泷奈主题个人博客"
-description: "一个关于技术、生活与创造的个人博客"
+title: "Takina"
+subtitle: "Interactive Engineering & UI Systems"
+description: "Personal engineering notes and interface design explorations"
 keywords:
-  - 技术
-  - 生活
-  - 博客
-author: "Takina Ying"
-language: zh-CN
-timezone: Asia/Shanghai
+  - Engineering
+  - Design
+  - Notes
+author: "Takina"
+language: en
+timezone: UTC
 url: https://blog.example.com
 root: /
 permalink: posts/:abbrlink/
@@ -48,7 +48,7 @@ index_generator:
   path: ""
   per_page: 10
   order_by: -date
-default_category: 随笔
+default_category: Engineering
 category_map: {}
 tag_map: {}
 date_format: YYYY-MM-DD

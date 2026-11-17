@@ -1,3 +1,5 @@
+import type { I18nOptions } from "./i18n";
+
 export type PlaybackOrder = "list" | "loop" | "single" | "random";
 export type BackgroundMode = "wallpaper" | "video";
 
@@ -65,6 +67,7 @@ export interface ExperienceConfig {
     modelPaths: string[];
     welcomeMessages: string[];
     idleMessages: string[];
+    videos?: Partial<Record<"stretch" | "think" | "look", string>>;
   };
   effects: {
     enabled: boolean;
@@ -78,6 +81,8 @@ export interface ExperienceConfig {
     video: boolean;
     carousel: boolean;
   };
+  /** Optional: added by the build when locale packs exist in source/_data/locales. */
+  i18n?: I18nOptions;
 }
 
 export interface UserSettings {
