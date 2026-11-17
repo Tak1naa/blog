@@ -904,6 +904,8 @@ figure.highlight .number {
 .ff-visit-stat { display: inline-flex; align-items: baseline; gap: 6px; }
 .ff-visit-value { min-inline-size: 2ch; font-weight: 600; font-variant-numeric: tabular-nums; }
 
+.ff-pages-comments { padding: 8px 20px; font-size: 12px; text-align: center; }
+
 .ff-music-cover {
   width: 64px;
   height: 64px;

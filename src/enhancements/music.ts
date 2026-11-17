@@ -115,16 +115,18 @@ export class MusicPlayer {
   private async loadPlaylist(): Promise<void> {
     this.tracks = [...this.config.localTracks];
     try {
-      const response = await fetch(`${this.config.apiBase}/playlist`, {
-        headers: { Accept: "application/json" },
-        signal: AbortSignal.timeout(6000),
-      });
-      if (response.ok) {
-        const remote = (await response.json()) as PlaylistResponse;
-        const ids = new Set(this.tracks.map((track) => `${track.source}:${track.id}`));
-        for (const track of remote.tracks ?? []) {
-          const key = `${track.source}:${track.id}`;
-          if (!ids.has(key)) this.tracks.push(track);
+      if (this.config.apiBase) {
+        const response = await fetch(`${this.config.apiBase}/playlist`, {
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(6000),
+        });
+        if (response.ok) {
+          const remote = (await response.json()) as PlaylistResponse;
+          const ids = new Set(this.tracks.map((track) => `${track.source}:${track.id}`));
+          for (const track of remote.tracks ?? []) {
+            const key = `${track.source}:${track.id}`;
+            if (!ids.has(key)) this.tracks.push(track);
+          }
         }
       }
     } catch {

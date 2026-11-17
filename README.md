@@ -69,3 +69,11 @@ If Playwright's bundled Chromium is unavailable, set `PLAYWRIGHT_CHROMIUM_EXECUT
 `localhost`、IP 地址及无域名的本地预览不请求统计接口，数字显示“—”，悬停可查看说明。网络错误、超时或无效数据同样显示“—”，不伪造为 0；发布到受支持的正式域名后才能验收真实累计数据。服务当前还限制域名长度，接入要求以其文档和站点公告为准。
 
 本地验证使用模拟统计响应，避免污染正式数据：`pnpm exec playwright test tests/e2e/visit-stats.spec.ts --config playwright.companion.config.ts --trace off`。覆盖桌面/移动端、浅深色、语言切换、PJAX 去重、接口失败和本地预览不计数。
+
+## GitHub Pages
+
+地址为 <https://tak1naa.github.io/blog/>，沿用仓库现有的 `blog-pages` 分支根目录发布。运行 `pnpm build:pages` 生成 `artifacts/pages/site/blog/`，将此目录的内容发布到该分支，包含 `.nojekyll`；源码继续保存在 `main`。构建会验证 `/blog/` 路径下的页面、资源和配置，`release.json` 记录对应源码提交。
+
+Pages 配置位于 `deploy/_config.github-pages.yml`，与服务器部署配置独立。该版本保留本地音乐、Live2D、透明视频和访问统计；不请求 Pages 上不存在的音乐/评论 API。文章页提供返回服务器版参与评论的链接。访问统计仍依赖第三方服务，失败时显示“—”。
+
+构建后的本地验收：`pnpm exec playwright test --config playwright.pages.config.ts`。线上验收可设置 `PAGES_BASE_URL=https://tak1naa.github.io/blog/` 使用相同测试。GitHub Pages 发布源码和流程说明见[官方文档](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 const root = resolve(process.argv[2]);
+const staticSite = process.argv.includes("--static");
 let pages = 0;
 function walk(directory) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
@@ -23,6 +24,7 @@ function walk(directory) {
 walk(join(root, "blog"));
 const config = JSON.parse(readFileSync(join(root, "blog/custom/config.json"), "utf8"));
 assert.equal(config.site.homePath, "/blog/");
-assert.equal(config.music.apiBase, "/blog/api/music");
+assert.equal(config.music.apiBase, staticSite ? "" : "/blog/api/music");
+if (staticSite) assert(existsSync(join(root, "blog/.nojekyll")), "Pages must skip Jekyll");
 for (const url of [config.live2d.modelPaths[0], config.music.localTracks[0].url, ...config.background.wallpapers.map(w => w.src)]) assert(url.startsWith("/blog/"));
 console.log(`Verified ${pages} HTML pages and subpath asset/config contracts.`);

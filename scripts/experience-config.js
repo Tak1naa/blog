@@ -37,7 +37,7 @@ const experienceSchema = z.object({
   }),
   music: z.object({
     enabled: z.boolean(),
-    apiBase: z.string().startsWith("/"),
+    apiBase: z.union([z.string().startsWith("/"), z.literal("")]),
     initialVolume: z.number().min(0).max(1),
     order: z.enum(["list", "loop", "single", "random"]),
     localTracks: z.array(z.object({
@@ -76,6 +76,7 @@ hexo.extend.generator.register("experience-config", function generateExperienceC
   const input = locals.data.experience;
   const parsed = experienceSchema.safeParse({
     ...input,
+    music: { ...input.music, apiBase: hexo.config.deployment_target === "github-pages" ? "" : input.music.apiBase },
     site: { ...input.site, subtitle: locals.data.anime_quotes },
   });
   if (!parsed.success) {

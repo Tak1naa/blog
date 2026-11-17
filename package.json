@@ -21,7 +21,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "new": "hexo new"
+    "new": "hexo new",
+    "build:pages": "node tools/build-pages.mjs"
   },
   "dependencies": {
     "@hono/node-server": "1.19.5",

@@ -1,0 +1,7 @@
+url: https://tak1naa.github.io/blog
+root: /blog/
+public_dir: artifacts/pages/raw
+deployment_target: github-pages
+theme_config:
+  comment:
+    use: []

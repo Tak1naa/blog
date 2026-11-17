@@ -192,6 +192,7 @@ export interface TranslationSchema {
   "visits.ready": string;
   "visits.local": string;
   "visits.unavailable": string;
+  "pages.comments": string;
 }
 
 export type TranslationKey = keyof TranslationSchema;
@@ -356,6 +357,7 @@ export const en: TranslationSchema = {
   "visits.ready": "Site-wide page views · Busuanzi",
   "visits.local": "Local previews are not counted. Visit counts appear on the public domain.",
   "visits.unavailable": "Visit counts are temporarily unavailable.",
+  "pages.comments": "Comment on the server edition",
 };
 
 /** A locale pack as shipped in JSON files or `window.__NOVA_LOCALES__`. */

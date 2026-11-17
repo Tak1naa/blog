@@ -1,4 +1,4 @@
-import { en, t, type TranslationKey, type TranslationParams } from "./i18n";
+import { en, t, translateDom, type TranslationKey, type TranslationParams } from "./i18n";
 
 /**
  * Translates the static markup Hexo + Solitude render (navbar, category bar,
@@ -211,6 +211,7 @@ export class ThemeTranslator {
 
   refresh(): void {
     translateTheme();
+    document.querySelectorAll(".ff-pages-comments").forEach(translateDom);
     // PJAX swaps #body-wrap, so re-target the observer at the current nodes.
     this.observer.disconnect();
     for (const node of document.querySelectorAll(THEME_WRITTEN)) {

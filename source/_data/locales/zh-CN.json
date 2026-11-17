@@ -142,6 +142,7 @@
     "visits.loading": "正在加载访问统计…",
     "visits.ready": "全站页面访问次数（PV）· 不蒜子统计",
     "visits.local": "本地预览不计数，发布到正式域名后显示访问次数。",
-    "visits.unavailable": "访问统计暂时不可用，请稍后刷新。"
+    "visits.unavailable": "访问统计暂时不可用，请稍后刷新。",
+    "pages.comments": "前往服务器版参与评论"
   }
 }
