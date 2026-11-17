@@ -1,0 +1,6 @@
+Cubism Core 6.0.1, preserved unmodified (not processed by Vite).
+Source: https://github.com/hacxy/l2d/tree/156ee3189b2905d565b75670b57beca7b46515b8/src/vendor/cubism6/Core
+This is the same runtime version as l2d-widget 0.1.2.
+Copyright Live2D Inc. See LICENSE.md and the notice in the script.
+Reason: the widget's bundled Core fails csmReviveMocInPlace for both the official Haru control and the generated Takina model.
+Load lazily via src/enhancements/cubism-core.ts; do not rebundle/minify the script.

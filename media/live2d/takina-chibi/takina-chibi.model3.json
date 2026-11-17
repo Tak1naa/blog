@@ -1,0 +1,92 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "takina-chibi.moc3?v=c21b5d567996",
+    "Textures": [
+      "takina-chibi.2048/texture_00.png?v=b1186517aed1"
+    ],
+    "Physics": "takina-chibi.physics3.json",
+    "DisplayInfo": "takina-chibi.cdi3.json",
+    "Motions": {
+      "Idle": [
+        {
+          "File": "takina-chibi.idle.motion3.json"
+        }
+      ],
+      "Blink": [
+        {
+          "File": "takina-chibi.blink.motion3.json"
+        }
+      ],
+      "Nod": [
+        {
+          "File": "takina-chibi.nod.motion3.json"
+        }
+      ],
+      "Shake": [
+        {
+          "File": "takina-chibi.shake.motion3.json"
+        }
+      ]
+    },
+    "Expressions": [
+      {
+        "Name": "neutral",
+        "File": "takina-chibi.neutral.exp3.json"
+      },
+      {
+        "Name": "smile",
+        "File": "takina-chibi.smile.exp3.json"
+      },
+      {
+        "Name": "wink",
+        "File": "takina-chibi.wink.exp3.json"
+      },
+      {
+        "Name": "curious",
+        "File": "takina-chibi.curious.exp3.json"
+      },
+      {
+        "Name": "sleepy",
+        "File": "takina-chibi.sleepy.exp3.json"
+      },
+      {
+        "Name": "carried",
+        "File": "takina-chibi.carried.exp3.json"
+      },
+      {
+        "Name": "laugh",
+        "File": "takina-chibi.laugh.exp3.json"
+      },
+      {
+        "Name": "surprised",
+        "File": "takina-chibi.surprised.exp3.json"
+      },
+      {
+        "Name": "pout",
+        "File": "takina-chibi.pout.exp3.json"
+      },
+      {
+        "Name": "speaking",
+        "File": "takina-chibi.speaking.exp3.json"
+      }
+    ]
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}

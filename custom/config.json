@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "site": {
+    "homePath": "/blog/",
+    "title": "Takina",
+    "subtitle": [
+      {
+        "text": "There is always only one truth!",
+        "ja": "しんじつはいつもひとつ！",
+        "work": "Detective Conan",
+        "character": "Conan Edogawa",
+        "source": "https://en.wikipedia.org/wiki/Case_Closed"
+      },
+      {
+        "text": "I'm gonna be King of the Pirates!",
+        "ja": "かいぞくおうにおれはなる！",
+        "work": "One Piece",
+        "character": "Monkey D. Luffy",
+        "source": "https://en.wikipedia.org/wiki/One_Piece"
+      },
+      {
+        "text": "Coach Anzai... I want to play basketball.",
+        "ja": "あんざいせんせい…バスケがしたいです",
+        "work": "Slam Dunk",
+        "character": "Hisashi Mitsui",
+        "source": "https://en.wikipedia.org/wiki/Slam_Dunk_(manga)"
+      },
+      {
+        "text": "I mustn't run away.",
+        "ja": "にげちゃだめだ",
+        "work": "Neon Genesis Evangelion",
+        "character": "Shinji Ikari",
+        "source": "https://en.wikipedia.org/wiki/Neon_Genesis_Evangelion"
+      },
+      {
+        "text": "One is all, all is one.",
+        "ja": "いちはぜん、ぜんはいち",
+        "work": "Fullmetal Alchemist",
+        "character": "Izumi Curtis",
+        "source": "https://en.wikipedia.org/wiki/Fullmetal_Alchemist"
+      },
+      {
+        "text": "I never go back on my word. That's my ninja way!",
+        "ja": "まっすぐじぶんのことばはまげねぇ。それがオレのにんどうだ！",
+        "work": "Naruto",
+        "character": "Naruto Uzumaki",
+        "source": "https://en.wikipedia.org/wiki/Naruto"
+      },
+      {
+        "text": "Just who the hell do you think I am?!",
+        "ja": "オレをだれだとおもっていやがる！",
+        "work": "Gurren Lagann",
+        "character": "Kamina",
+        "source": "https://en.wikipedia.org/wiki/Gurren_Lagann"
+      },
+      {
+        "text": "Dedicate your hearts!",
+        "ja": "しんぞうをささげよ！",
+        "work": "Attack on Titan",
+        "character": "Erwin Smith",
+        "source": "https://en.wikipedia.org/wiki/Attack_on_Titan"
+      },
+      {
+        "text": "Good grief.",
+        "ja": "やれやれだぜ",
+        "work": "JoJo's Bizarre Adventure: Stardust Crusaders",
+        "character": "Jotaro Kujo",
+        "source": "https://en.wikipedia.org/wiki/Stardust_Crusaders"
+      },
+      {
+        "text": "Set your heart ablaze.",
+        "ja": "こころをもやせ",
+        "work": "Demon Slayer: Kimetsu no Yaiba",
+        "character": "Kyojuro Rengoku",
+        "source": "https://en.wikipedia.org/wiki/Demon_Slayer:_Kimetsu_no_Yaiba"
+      },
+      {
+        "text": "Amuro, launching!",
+        "ja": "アムロ、いきまーす！",
+        "work": "Mobile Suit Gundam",
+        "character": "Amuro Ray",
+        "source": "https://en.wikipedia.org/wiki/Mobile_Suit_Gundam"
+      },
+      {
+        "text": "In the name of the Moon, I'll punish you!",
+        "ja": "つきにかわっておしおきよ！",
+        "work": "Sailor Moon",
+        "character": "Usagi Tsukino",
+        "source": "https://en.wikipedia.org/wiki/Sailor_Moon"
+      },
+      {
+        "text": "You are already dead.",
+        "ja": "おまえはもうしんでいる",
+        "work": "Fist of the North Star",
+        "character": "Kenshiro",
+        "source": "https://en.wikipedia.org/wiki/Fist_of_the_North_Star"
+      }
+    ]
+  },
+  "background": {
+    "defaultMode": "wallpaper",
+    "intervalMs": 9000,
+    "transitionMs": 1200,
+    "overlayOpacity": 0.38,
+    "wallpapers": [
+      {
+        "src": "/blog/media/takina/aquarium.jpg",
+        "alt": "Aquarium scene with blue and purple ambient lighting"
+      },
+      {
+        "src": "/blog/media/takina/night-action.jpg",
+        "alt": "Night action illustration in deep cool tones"
+      }
+    ],
+    "video": {
+      "enabled": true,
+      "sources": [
+        {
+          "src": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+          "type": "video/mp4"
+        }
+      ],
+      "poster": "/blog/media/takina/aquarium.jpg",
+      "timeoutMs": 8000
+    }
+  },
+  "music": {
+    "enabled": true,
+    "apiBase": "",
+    "initialVolume": 0.7,
+    "order": "loop",
+    "localTracks": [
+      {
+        "id": "local-dog-days",
+        "source": "local",
+        "title": "Dog Days",
+        "artists": [
+          "Manaka BGM"
+        ],
+        "url": "/blog/media/music/dog-days.mp3",
+        "cover": "/blog/media/takina/avatar.png"
+      }
+    ]
+  },
+  "live2d": {
+    "enabled": true,
+    "defaultEnabled": false,
+    "modelPaths": [
+      "/blog/media/live2d/takina-chibi/takina-chibi.model3.json?v=reference-278fdeef1009"
+    ],
+    "welcomeMessages": [
+      "Welcome to Takina Studio!",
+      "Stay curious every day."
+    ],
+    "idleMessages": [
+      "Take a pause and look far ahead.",
+      "Discovering anything inspiring today?"
+    ],
+    "videos": {
+      "stretch": "/blog/media/companion/stretch-v1.webm",
+      "think": "/blog/media/companion/think-v1.webm",
+      "look": "/blog/media/companion/look-v1.webm"
+    }
+  },
+  "effects": {
+    "enabled": true,
+    "typewriter": true,
+    "sakura": true,
+    "maxParticles": 36
+  },
+  "mobile": {
+    "breakpoint": 768,
+    "live2d": false,
+    "video": false,
+    "carousel": true
+  },
+  "i18n": {
+    "defaultLocale": "en",
+    "locales": [
+      {
+        "code": "en",
+        "label": "English",
+        "url": "/blog/custom/locales/en.json"
+      },
+      {
+        "code": "zh-CN",
+        "label": "简体中文",
+        "url": "/blog/custom/locales/zh-CN.json"
+      }
+    ]
+  }
+}
